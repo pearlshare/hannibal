@@ -208,7 +208,7 @@ Validators check the value against a set of criteria. Available validators are:
 
 String:
 
- * match - perform a regex match
+ * regex - perform a regex match
  * min - check the minimum length
  * max - check the maximum length
  * enum - check the value is contained in a given array

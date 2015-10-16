@@ -45,11 +45,11 @@ describe("validators.string", function () {
     });
   });
 
-  describe("match", function () {
+  describe("regex", function () {
     var testSchema = hannibal({
       type: "string",
       validators: {
-        match: "H.*$"
+        regex: "H.*$"
       }
     });
 
