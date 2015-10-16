@@ -39,7 +39,7 @@ var schema = {
             }
         },
         contact: {
-            aliasTo: "phone" // rename 'contact' to 'phone' and validate
+            aliasOf: "phone" // rename 'contact' to 'phone' and validate
         },
         gender: {
             type: "string",
@@ -190,11 +190,9 @@ Packaged pre filters include:
  * toArray  - wrap non arrays into an array
  * JSONtoObject - parse json into an object
 
-Custom pre functions can be added inline via functions or registered into Hannibal. The functions take the params:
+See `lib/pre` for the full list.
 
- * obj - the whole object being validated
- * key - the name of the current key
- * value - the value of the key
+Custom pre functions can be added inline via functions or registered into Hannibal. The functions take the value;
 
 ### Required
 
@@ -239,11 +237,7 @@ Object:
  * min - minimum number of keys
  * max - maximum number of keys
 
-Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with:
-
- * obj - the whole object being validated
- * key - the name of the current key
- * value - the value of the key
+Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate.
 
 Custom validators should throw an instace of `Error` with a message.
 
