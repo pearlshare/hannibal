@@ -1,0 +1,27 @@
+{
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "describe": false,
+    "before": false,
+    "beforeEach": false,
+    "it": false,
+    "after": true
+  },
+  // http://eslint.org/docs/rules/
+  "rules": {
+    "camelcase": 1,
+    "new-cap": 0,
+    "key-spacing": 0,
+    "no-multi-spaces": 0,
+    "eol-last": 1,
+    "strict": 0,
+    "no-underscore-dangle": 0,
+    "valid-jsdoc": [1, {
+      "prefer": {
+          "return": "returns"
+      }
+  }]
+  }
+}

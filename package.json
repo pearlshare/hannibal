@@ -15,5 +15,13 @@
     "errors"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^0.24.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
 }

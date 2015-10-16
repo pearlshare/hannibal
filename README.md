@@ -14,84 +14,90 @@ Be fast and lightweight.
 
 ```js
 var schema = {
-    name: {
-        type: "string", // value must be a string if present
-        required: true, // If the key is missing will raise error
-        validators: {
-            min: 2, // Minimum value string length
-            max: 50 // Maximum value string length
-        }
-    },
-    age: {
-        type: ["integer", "null"], // value must be an integer or null
-        pre: "toInt", // before validation perform a built in function
-        validators: {
-            min: 0, // min value
-            max: 120 // max value
-        }
-    },
-    phone: {
-        type: "string",
-        aliases: ["contact"] // rename 'contact' to 'phone' and validate
-        validators: {
-            regex: /\+\d{2,3}\s\d{10,12}$/ // Check regex match
-        }
-    },
-    gender: {
-        type: "string",
-        validators: {
-            enum: ["male", "female"] // value must be one of male/female
-        }
-    },
-    petName: {
-        type: "string",
-        validators: {
-            // Run a completely custom validator which throws errors
-            custom: function (value) {
-                if (value.slice(value.length -2, value.length) !== "fy") {
-                    throw new Error ("should end in fy, like 'fluffy'")
+    type: "object",
+    schema: {
+        name: {
+            type: "string", // value must be a string if present
+            required: true, // If the key is missing will raise error
+            validators: {
+                min: 2, // Minimum value string length
+                max: 50 // Maximum value string length
+            }
+        },
+        age: {
+            type: ["number", "null"], // value must be an number or null
+            pre: "toInt", // before validation perform a built in function
+            validators: {
+                min: 0, // min value
+                max: 120 // max value
+            }
+        },
+        phone: {
+            type: "string",
+            validators: {
+                regex: /\+\d{2,3}\s\d{10,12}$/ // Check regex match
+            }
+        },
+        contact: {
+            aliasTo: "phone" // rename 'contact' to 'phone' and validate
+        },
+        gender: {
+            type: "string",
+            validators: {
+                enum: ["male", "female"] // value must be one of male/female
+            }
+        },
+        petName: {
+            type: "string",
+            validators: {
+                // Run a completely custom validator which throws errors
+                custom: function (value) {
+                    if (value.slice(value.length -2, value.length) !== "fy") {
+                        throw new Error ("should end in fy, like 'fluffy'")
+                    }
                 }
             }
-        }
-    },
-    address: {
-        type: ["object", "null"], // allow an object or null
-        schema: {
-            house: {
-                type: "string",
-                required: true // If the address object is present then it must have a 'house' key
-                validators: {
-                }
-            },
-            street: {
-                type: ["string", "null"]
-            },
-            city: {
-                type: "string",
-                required: true,
-            },
-            country: {
-                type: "string",
-                pre: "toUppercase"
-                required: true,
-                validators: {
-                    enum: ["GB", "US", "AU"]
+        },
+        address: {
+            type: ["object", "null"], // allow an object or null
+            schema: {
+                house: {
+                    type: "string",
+                    required: true // If the address object is present then it must have a 'house' key
+                    validators: {
+                    }
+                },
+                street: {
+                    type: ["string", "null"]
+                },
+                city: {
+                    type: "string",
+                    required: true,
+                },
+                country: {
+                    type: "string",
+                    pre: "toUppercase"
+                    required: true,
+                    validators: {
+                        enum: ["GB", "US", "AU"]
+                    }
                 }
             }
+        },
+        dateOfBirth: {
+            type: "date", // value must be a date object
+            required: true,
+            pre: [
+                // custom function to convert unix timestamp to date
+                function (obj, key, value) {
+                    if (typeof value === "number") {
+                        obj[key] = new Date(value*1000);
+                    }
+                },
+                "toDate" // cast date string into date
+            ]
         }
-    },
-    dateOfBirth: {
-        type: "date", // value must be a date object
-        required: true,
-        pre: [
-            // custom function to convert unix timestamp to date
-            function (obj, key, value) {
-                if (typeof value === "number") {
-                    obj[key] = new Date(value*1000);
-                }
-            },
-            "toDate" // cast date string into date
-        ]
+        
     }
 };
 ```
@@ -152,13 +158,6 @@ plan2.errors // [{petName: "should end in fy, like 'fluffy'"}, {address: {street
 
 // Output valid data
 plan2.data // {name: "B A Baracus", age: 38, ...}
-
-// Can validate an array of objects at once
-var plans = testSchema([inputData1, inputData2]);
-
-plans.isValid // false
-plans.errors // [[], [{petName: "should end in fy, like 'fluffy'"}, {address: {street: "is required"}}, {dateOfBirth: "is required"}]]
-plans.data // [{name: "Hannibal Smith", ...}, {name: "B A Baracus", age: 38, ...}]
 ```
 
 ## Schema building
@@ -171,9 +170,9 @@ Available types:
 
  * string
  * date
+ * boolean
  * time
- * integer
- * float
+ * number
  * array
  * object
  * null
@@ -186,7 +185,7 @@ Packaged pre filters include:
 
  * toString - convert numbers into strings
  * toInteger - convert strings into integers
- * toFloat  - convert strings into numbers
+ * toFloat  - convert strings into floats
  * toDate  - convert strings into dates
  * toArray  - wrap non arrays into an array
  * JSONtoObject - parse json into an object
@@ -216,11 +215,13 @@ String:
  * max - check the maximum length
  * enum - check the value is contained in a given array
 
-Float/Integer:
+Number:
 
  * min - minimum value
  * max - maximum value
  * enum - check the value is contained in a given array
+ * minPrecision - minimum number of decimal places
+ * maxPrecision - maximum number of decimal places
 
 Date/Time:
 
