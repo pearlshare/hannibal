@@ -18,6 +18,7 @@ describe("validator(number)", function () {
       var output = testSchema(null);
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("object").and.to.have.keys("type");
     });
   });
 });

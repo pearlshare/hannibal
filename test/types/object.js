@@ -20,6 +20,7 @@ describe("validator(object)", function () {
       var output = testSchema("string");
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("object").and.to.have.keys("type");
     });
   });
 
@@ -28,7 +29,7 @@ describe("validator(object)", function () {
       type: "object",
       schema: {
         name: {
-          type: "string",
+          type: "string"
         }
       }
     });
@@ -48,6 +49,8 @@ describe("validator(object)", function () {
       });
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("object").and.to.have.keys("name");
+      expect(output.error.name).to.be.a("object").and.to.have.keys("type");
     });
 
   });
@@ -57,7 +60,7 @@ describe("validator(object)", function () {
       type: "object",
       schema: {
         name: {
-          type: "string",
+          type: "string"
         },
         address: {
           type: "object",
@@ -91,6 +94,9 @@ describe("validator(object)", function () {
       });
 
       expect(output.isValid).to.be(false);
+      expect(output.error.name).to.be(undefined);
+      expect(output.error.address).to.be.a("object").and.have.keys("street");
+      expect(output.error.address.street).to.be.a("object").and.have.keys("type");
     });
 
   });

@@ -18,6 +18,7 @@ describe("validator(array)", function () {
       var output = testSchema(null);
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("object").and.to.have.keys("type");
     });
   });
 
@@ -39,6 +40,8 @@ describe("validator(array)", function () {
       var output = testSchema([1]);
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("array").and.to.have.length(1);
+      expect(output.error[0]).to.be.a("object").and.to.have.keys("type");
     });
   });
 
@@ -63,6 +66,9 @@ describe("validator(array)", function () {
       var output = testSchema([[1]]);
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("array").and.to.have.length(1);
+      expect(output.error[0]).to.be.a("array").and.to.have.length(1);
+      expect(output.error[0][0]).to.be.a("object").and.to.have.keys("type");
     });
   });
 
@@ -74,6 +80,9 @@ describe("validator(array)", function () {
         schema: {
           name: {
             type: "string"
+          },
+          age: {
+            type: "number"
           }
         }
       }
@@ -82,7 +91,8 @@ describe("validator(array)", function () {
     it("should validate an array", function () {
       var output = testSchema([
         {
-          name: "Hannibal"
+          name: "Hannibal",
+          age: 54
         }
       ]);
 
@@ -92,11 +102,16 @@ describe("validator(array)", function () {
     it("should fail to validate if not a valid nested array", function () {
       var output = testSchema([
         {
-          name: null
+          name: null,
+          age: 54
         }
       ]);
 
       expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("array").and.to.have.length(1);
+      expect(output.error[0]).to.be.a("object").and.to.have.keys("name");
+      expect(output.error[0].age).to.be(undefined);
+      expect(output.error[0].name).to.be.a("object").and.to.have.keys("type");
     });
   });
 });
