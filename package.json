@@ -1,0 +1,19 @@
+{
+  "name": "hannibal",
+  "version": "0.0.1",
+  "description": "Validate JSON",
+  "repository": {
+    "git": "https://github.com/oliverbrooks/hannibal.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "JSON",
+    "validation",
+    "errors"
+  ],
+  "author": "",
+  "license": "MIT"
+}
