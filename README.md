@@ -10,6 +10,27 @@ Provide a limited set of handy shortcut functions for common validations such as
 
 Be fast and lightweight.
 
+## Setup
+
+```js
+var hannibal = require("hannibal", {
+    // Add a custom set of pre functions
+    pre: {
+        addThe: function (value) {
+            return "The " + value;
+        }
+    },
+    // Add custom validators
+    validators: {
+        bannedHouses: function (attr, value) {
+            if (value === attrs) {
+                throw new Error("The A-Team can't stay in a: " + value);
+            }
+        }
+    }
+});
+```
+
 ## Features
 
 ```js
@@ -65,10 +86,12 @@ var schema = {
                     type: "string",
                     required: true // If the address object is present then it must have a 'house' key
                     validators: {
+                        bannedHouses: "Garage full of tools"
                     }
                 },
                 street: {
-                    type: ["string", "null"]
+                    type: ["string", "null"],
+                    pre: "addThe"
                 },
                 city: {
                     type: "string",
@@ -105,8 +128,6 @@ var schema = {
 ## Usage
 
 ```js
-var hannibal = require("hannibal");
-
 // Create a test function
 var testSchema = hannibal(schema);
 
@@ -242,3 +263,5 @@ Custom validators can be given via the `custom` key or registered with `hannibal
 Custom validators should throw an instace of `Error` with a message.
 
 ## Test
+
+Run tests using `npm test`.
