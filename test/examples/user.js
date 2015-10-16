@@ -13,8 +13,13 @@ var testSchema = hannibal({
       type: "string",
       required: true
     },
+    aka: {
+      type: ["string", "null"],
+      required: true
+    },
     address: {
       type: "object",
+      required: true,
       schema: {
         street: {
           type: "string",
@@ -64,7 +69,8 @@ describe("examples", function () {
     it("should be valid with exact matches", function () {
       var user = {
         id: "5",
-        name: "Hannibal Smith",
+        name: "John Smith",
+        aka: "Hannibal",
         address: {
           street: "The underground",
           country: "us"
@@ -82,6 +88,7 @@ describe("examples", function () {
       expect(result.data).to.be.a("object");
       expect(result.data.id).to.be.a("number").and.to.equal(5);
       expect(result.data.name).to.be.a("string").and.to.equal(user.name);
+      expect(result.data.aka).to.be.a("string").and.to.equal(user.aka);
       expect(result.data.address).to.be.a("object").and.to.have.keys("street", "country");
       expect(result.data.address.street).to.equal("The underground");
       expect(result.data.address.country).to.equal("US");
@@ -95,7 +102,8 @@ describe("examples", function () {
     it("should be valid with extra fields removed", function () {
       var user = {
         id: "6",
-        name: "Mad dog Murdoch",
+        name: "Howling Mad Murdoch",
+        aka: null,
         address: {
           street: "The underground",
           country: "us"
@@ -114,6 +122,7 @@ describe("examples", function () {
       expect(result.data).to.be.a("object");
       expect(result.data.id).to.be.a("number").and.to.equal(6);
       expect(result.data.name).to.be.a("string").and.to.equal(user.name);
+      expect(result.data.aka).to.be(null);
       expect(result.data.address).to.be.a("object").and.to.have.keys("street", "country");
       expect(result.data.address.street).to.equal("The underground");
       expect(result.data.address.country).to.equal("US");
@@ -127,7 +136,8 @@ describe("examples", function () {
     it("should be valid with optional fields missing", function () {
       var user = {
         id: "7",
-        name: "Face",
+        name: "Templeton Peck",
+        aka: "Face",
         address: {
           street: "The underground",
           country: "us"
@@ -162,17 +172,20 @@ describe("examples", function () {
       expect(result.data).to.be.a("object");
       expect(result.data.id).to.be.a("number").and.to.equal(8);
       expect(result.data.name).to.be.a("string").and.to.equal(user.name);
+      expect(result.data.aka).to.be(undefined);
       expect(result.data.address).to.be.a("object").and.to.have.keys("country");
       expect(result.data.address.country).to.equal("US");
       expect(result.data.favouritePet).to.be(undefined);
       expect(result.error.address).to.be.an("object").and.to.have.keys("street");
       expect(result.error.address.street).to.be.an("object").and.have.keys("required");
+      expect(result.error.aka).to.be.an("object").and.have.keys("required");
     });
 
     it("should be invalid with fields with the wrong type", function () {
       var user = {
         id: "8",
         name: 2,
+        aka: "fish",
         address: {
           country: "us"
         }
