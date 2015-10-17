@@ -4,11 +4,11 @@
 
 ## Objectives
 
-Validate a JSON object and provide clear error reporting where the object is not valid.
+Validate a JavaScript object, array or primitive and provide clear error reporting where the object is not valid.
 
 Provide a means to extend the validator functionality using plain JavaScript functions.
 
-Provide a limited set of handy shortcut functions for common validations such as regex and enums.
+Provide a handy set of common validations such as regex and enums without going overboard.
 
 Be fast and lightweight.
 
@@ -257,11 +257,6 @@ Array:
 
  * min - check the minimum length
  * max - check the maximum length
-
-Object:
-
- * min - minimum number of keys
- * max - maximum number of keys
 
 Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate.
 
