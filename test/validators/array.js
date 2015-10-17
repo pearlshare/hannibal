@@ -1,10 +1,12 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validators.array", function () {
+  var hannibal = new Hannibal();
+  var hannibal = new Hannibal();
 
   describe("min length", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       validators: {
         min: 2
@@ -25,7 +27,7 @@ describe("validators.array", function () {
   });
 
   describe("max length", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       validators: {
         max: 1

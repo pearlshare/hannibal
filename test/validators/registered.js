@@ -1,15 +1,7 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validators", function () {
-
-  var schema = {
-    type: "string",
-    pre: "addSmith",
-    validators: {
-      checkName: "Mad Dog Murdoch"
-    }
-  };
 
   var additions = {
     pre: {
@@ -32,8 +24,18 @@ describe("validators", function () {
     }
   };
 
+  var hannibal = new Hannibal(additions);
+
+  var schema = {
+    type: "string",
+    pre: "addSmith",
+    validators: {
+      checkName: "Mad Dog Murdoch"
+    }
+  };
+
   describe("registered", function () {
-    var testSchema = hannibal(schema, additions);
+    var testSchema = hannibal.create(schema, additions);
 
     it("should validate Hannibal", function () {
       var output = testSchema("Hannibal");

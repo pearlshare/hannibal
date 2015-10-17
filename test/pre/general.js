@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("pre", function () {
+  var hannibal = new Hannibal();
 
   describe("toString", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       pre: "toString"
     });
@@ -43,7 +44,7 @@ describe("pre", function () {
   });
 
   describe("toInteger", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number",
       pre: "toInteger"
     });
@@ -90,7 +91,7 @@ describe("pre", function () {
   });
 
   describe("toFloat", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number",
       pre: "toFloat"
     });
@@ -137,7 +138,7 @@ describe("pre", function () {
   });
 
   describe("toArray", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       pre: "toArray"
     });

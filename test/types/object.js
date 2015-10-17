@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validator(object)", function () {
+  var hannibal = new Hannibal();
 
   describe("basic object", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "object"
     });
 
@@ -25,7 +26,7 @@ describe("validator(object)", function () {
   });
 
   describe("nested object", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "object",
       schema: {
         name: {
@@ -56,7 +57,7 @@ describe("validator(object)", function () {
   });
 
   describe("deeply nested object", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "object",
       schema: {
         name: {

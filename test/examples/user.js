@@ -1,8 +1,8 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 
-var testSchema = hannibal({
+var testSchema = new Hannibal().create({
   type: "object",
   schema: {
     id: {
@@ -63,6 +63,7 @@ var testSchema = hannibal({
 });
 
 describe("examples", function () {
+  var hannibal = new Hannibal();
 
   describe("valid user", function () {
 

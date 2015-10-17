@@ -1,10 +1,12 @@
 var expect = require("expect.js");
-var hannibal = require("../index");
+var Hannibal = require("../index");
 
 describe("validator required", function () {
+  var hannibal = new Hannibal();
+  var hannibal = new Hannibal();
 
   describe("required true", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       required: true
     });
 
@@ -22,7 +24,7 @@ describe("validator required", function () {
   });
 
   describe("required false", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       required: false
     });
 
@@ -40,7 +42,7 @@ describe("validator required", function () {
   });
 
   describe("nested object require", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       schema: {
         name: {
           required: true

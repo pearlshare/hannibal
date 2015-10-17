@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("pre", function () {
+  var hannibal = new Hannibal();
 
   describe("custom", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       pre: function (value) {
         if (value === "Hannibal") {

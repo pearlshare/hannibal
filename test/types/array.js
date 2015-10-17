@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validator(array)", function () {
+  var hannibal = new Hannibal();
 
   describe("basic array", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array"
     });
 
@@ -23,7 +24,7 @@ describe("validator(array)", function () {
   });
 
   describe("nested array", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       schema: {
         type: "string"
@@ -46,7 +47,7 @@ describe("validator(array)", function () {
   });
 
   describe("nested array of arrays", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       schema: {
         type: "array",
@@ -73,7 +74,7 @@ describe("validator(array)", function () {
   });
 
   describe("nested array of objects", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "array",
       schema: {
         type: "object",

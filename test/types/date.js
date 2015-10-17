@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validator(date)", function () {
+  var hannibal = new Hannibal();
 
   describe("basic date", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "date"
     });
 

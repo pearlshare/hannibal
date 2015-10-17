@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validator(null)", function () {
+  var hannibal = new Hannibal();
 
   describe("null", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "null"
     });
 

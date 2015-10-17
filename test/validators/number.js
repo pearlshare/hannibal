@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validators.number", function () {
+  var hannibal = new Hannibal();
 
   describe("min Value", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number",
       validators: {
         min: 5
@@ -25,7 +26,7 @@ describe("validators.number", function () {
   });
 
   describe("max Value", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number",
       validators: {
         max: 5
@@ -46,7 +47,7 @@ describe("validators.number", function () {
   });
 
   describe("enum", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number",
       validators: {
         enum: [5, 6]

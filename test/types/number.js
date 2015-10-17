@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validator(number)", function () {
+  var hannibal = new Hannibal();
 
   describe("basic number", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "number"
     });
 

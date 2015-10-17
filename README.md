@@ -13,7 +13,10 @@ Be fast and lightweight.
 ## Setup
 
 ```js
-var hannibal = require("hannibal", {
+var Hannibal = require("hannibal");
+
+// Create a validator with custom filters and validators registered
+var hannibal = new Hannibal({
     // Add a custom set of pre functions
     pre: {
         addThe: function (value) {
@@ -112,7 +115,7 @@ var schema = {
             required: true,
             pre: [
                 // custom function to convert unix timestamp to date
-                function (obj, key, value) {
+                function (value) {
                     if (typeof value === "number") {
                         obj[key] = new Date(value*1000);
                     }
@@ -129,7 +132,7 @@ var schema = {
 
 ```js
 // Create a test function
-var testSchema = hannibal(schema);
+var testSchema = hannibal.create(schema);
 
 var inputData1 = {
     name: "Hannibal Smith",

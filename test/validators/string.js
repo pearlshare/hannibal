@@ -1,10 +1,11 @@
 var expect = require("expect.js");
-var hannibal = require("../../index");
+var Hannibal = require("../../index");
 
 describe("validators.string", function () {
+  var hannibal = new Hannibal();
 
   describe("min length", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       validators: {
         min: 5
@@ -25,7 +26,7 @@ describe("validators.string", function () {
   });
 
   describe("max length", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       validators: {
         max: 5
@@ -46,7 +47,7 @@ describe("validators.string", function () {
   });
 
   describe("regex", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       validators: {
         regex: "H.*$"
@@ -67,7 +68,7 @@ describe("validators.string", function () {
   });
 
   describe("enum", function () {
-    var testSchema = hannibal({
+    var testSchema = hannibal.create({
       type: "string",
       validators: {
         enum: ["Hannibal"]
