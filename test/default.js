@@ -1,30 +1,12 @@
 var expect = require("expect.js");
 var Hannibal = require("../index");
 
-describe("validator required", function () {
+describe("validator default", function () {
   var hannibal = new Hannibal();
 
-  describe("required true", function () {
+  describe("default", function () {
     var testSchema = hannibal.create({
-      required: true
-    });
-
-    it("should return true if a value is given", function () {
-      var output = testSchema("Hannibal");
-
-      expect(output.isValid).to.be(true);
-    });
-
-    it("should fail to validate if not a string", function () {
-      var output = testSchema(undefined);
-
-      expect(output.isValid).to.be(false);
-    });
-  });
-
-  describe("required false", function () {
-    var testSchema = hannibal.create({
-      required: false
+      default: "Face"
     });
 
     it("should return true if a value is given", function () {
@@ -37,14 +19,36 @@ describe("validator required", function () {
       var output = testSchema(undefined);
 
       expect(output.isValid).to.be(true);
+      expect(output.data).to.eql("Face");
     });
   });
 
-  describe("nested object require", function () {
+  describe("default false", function () {
+    var testSchema = hannibal.create({
+      default: false
+    });
+
+    it("should return true if a value is given", function () {
+      var output = testSchema("Hannibal");
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql("Hannibal");
+    });
+
+    it("should fail to validate if not a string", function () {
+      var output = testSchema();
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql(false);
+    });
+  });
+
+  describe("nested object default", function () {
     var testSchema = hannibal.create({
       schema: {
         name: {
-          required: true
+          type: "string",
+          default: "Face"
         }
       }
     });
@@ -53,6 +57,7 @@ describe("validator required", function () {
       var output = testSchema({name: "Hannibal"});
 
       expect(output.isValid).to.be(true);
+      expect(output.data).to.eql({name: "Hannibal"});
     });
 
     it("should return true if a object is not given", function () {
@@ -62,12 +67,12 @@ describe("validator required", function () {
       expect(output.data).to.be(undefined);
     });
 
-    it("should fail to validate if name isn't defined", function () {
+    it("should set the name if it isn't defined", function () {
       var output = testSchema({});
 
-      expect(output.isValid).to.be(false);
-      expect(output.data).to.be.a("object").and.not.have.keys("name");
-      expect(output.error.name).to.be.a("object").and.have.keys("required");
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("object").and.have.keys("name");
+      expect(output.data.name).to.equal("Face");
     });
   });
 });

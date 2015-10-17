@@ -1,3 +1,4 @@
+require("./default");
 require("./examples");
 require("./pre");
 require("./types");

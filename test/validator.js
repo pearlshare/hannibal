@@ -1,8 +1,7 @@
 var expect = require("expect.js");
 var Hannibal = require("../index");
 
-describe("builder", function () {
-  var hannibal = new Hannibal();
+describe("create", function () {
   var hannibal = new Hannibal();
 
   it("should take an object", function () {
