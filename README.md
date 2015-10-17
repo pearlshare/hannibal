@@ -8,7 +8,7 @@ Validate a JavaScript object, array or primitive and provide clear error reporti
 
 Provide a means to extend the validator functionality using plain JavaScript functions.
 
-Provide a handy set of common validations such as regex and enums without going overboard.
+Provide a handy set of common validations such as min/max values, regex and enums without going overboard.
 
 Be fast and lightweight.
 
@@ -28,7 +28,7 @@ var hannibal = new Hannibal({
     // Add custom validators
     validators: {
         bannedHouses: function (attr, value) {
-            if (value === attrs) {
+            if (value === attr) {
                 throw new Error("The A-Team can't stay in a: " + value);
             }
         }
@@ -218,7 +218,7 @@ Packaged pre filters include:
 
 See `lib/pre` for the full list.
 
-Custom pre functions can be added inline via functions or registered into Hannibal. The functions take the value;
+Custom pre functions can be added in-line via functions or registered into Hannibal. The functions take the value;
 
 ### Required
 
@@ -260,8 +260,15 @@ Array:
 
 Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate.
 
-Custom validators should throw an instace of `Error` with a message.
+Custom validators should throw an instance of `Error` with a message.
 
 ## Test
 
 Run tests using `npm test`.
+
+## TODO
+
+* Add alias functionality to rename keys
+* Validate incoming schema
+    - perhaps use hannibal on itself?!?
+* 
