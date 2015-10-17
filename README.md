@@ -1,5 +1,7 @@
 # Hannibal
 
+![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
+
 ## Objectives
 
 Validate a JSON object and provide clear error reporting where the object is not valid.
