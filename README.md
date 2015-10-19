@@ -1,5 +1,9 @@
 # Hannibal
 
+![circleci](https://circleci.com/gh/oliverbrooks/hannibal.png?style=shield)
+![Dependency Status](https://david-dm.org/oliverbrooks/hannibal.svg)
+![Dev Dependency Status](https://david-dm.org/oliverbrooks/hannibal/dev-status.svg)
+
 ![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
 
 ## Objectives
