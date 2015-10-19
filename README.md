@@ -218,7 +218,21 @@ Packaged pre filters include:
 
 See `lib/pre` for the full list.
 
-Custom pre functions can be added in-line via functions or registered into Hannibal. The functions take the value;
+Custom pre functions can be added in-line via functions or registered into Hannibal. The functions take the value and any options passed when performing validation:
+
+```js
+var Hannibal = require("hannibal");
+var hannibal = new Hannibal();
+var validator = hannibal.create({
+    type: "number",
+    pre: function (value, opts) {
+        return value * opts.multiplier
+    }
+});
+console.log(validator(2)) // {isValid: true, data: 10, ...}
+
+```
+
 
 ### Required
 
