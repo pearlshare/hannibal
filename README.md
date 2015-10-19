@@ -128,7 +128,7 @@ Array:
  * min - check the minimum length
  * max - check the maximum length
 
-Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate.
+Custom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate and the argument provided in the schema.
 
 Custom validators should throw an instance of `Error` with a message.
 
@@ -173,7 +173,7 @@ var hannibal = new Hannibal({
     },
     validators: {
         string: {
-            bannedHouses: function (attr, value) {
+            bannedHouses: function (value, attr) {
                 if (value === attr) {
                     throw new Error("The A-Team can't stay in a: " + value);
                 }
