@@ -14,29 +14,45 @@ Be fast and lightweight.
 
 ## Setup
 
+Aim of setup is to configure Hannibal to your requirements. This is done by creating a new instance passing an optional customisation object. The customisation object will be added to or override the default set or `transforms` and `validators`.
+
+Note that without a customisation object Hannibal will use the default pre and validators.
+
 ```js
 var Hannibal = require("hannibal");
 
 // Create a validator with custom filters and validators registered
 var hannibal = new Hannibal({
-    // Add a custom set of pre functions
-    pre: {
+    // Add a custom set of transform functions
+    transforms: {
         addThe: function (value) {
-            return "The " + value;
+            if (typeof value === "string") {
+                return "The " + value;
+            } else {
+                return value;
+            }
         }
     },
     // Add custom validators
     validators: {
-        bannedHouses: function (attr, value) {
-            if (value === attr) {
-                throw new Error("The A-Team can't stay in a: " + value);
+        string: {
+            bannedHouses: function (attr, value) {
+                if (value === attr) {
+                    throw new Error("The A-Team can't stay in a: " + value);
+                }
             }
         }
     }
 });
 ```
 
-## Features
+## Schema definition
+
+The schema defines the object to be validated. It is configuration which Hannibal will load and validate values against.
+
+An objective of the schema is to be able to store as a JSON string to be portable across platforms.
+
+Note the example below shows many of the features of Hannibal including custom validator and transforms which can't be serialized to JSON.  To do so they can be registered as per setup and called using their keys.
 
 ```js
 var schema = {
@@ -52,7 +68,7 @@ var schema = {
         },
         age: {
             type: ["number", "null"], // value must be an number or null
-            pre: "toInt", // before validation perform a built in function
+            transforms: "toInt", // before validation perform a built in function
             validators: {
                 min: 0, // min value
                 max: 120 // max value
@@ -61,11 +77,8 @@ var schema = {
         phone: {
             type: "string",
             validators: {
-                regex: /\+\d{2,3}\s\d{10,12}$/ // Check regex match
+                regex: "\+\d{2,3}\s\d{10,12}$" // Check regex match
             }
-        },
-        contact: {
-            aliasOf: "phone" // rename 'contact' to 'phone' and validate
         },
         gender: {
             type: "string",
@@ -76,9 +89,9 @@ var schema = {
         petName: {
             type: "string",
             validators: {
-                // Run a completely custom validator which throws errors
-                custom: function (value) {
-                    if (value.slice(value.length -2, value.length) !== "fy") {
+                // Run a completely custom validator
+                isFluffy: function (value) {
+                    if (value.slice(value.length - 2, value.length) !== "fy") {
                         throw new Error ("should end in fy, like 'fluffy'")
                     }
                 }
@@ -96,7 +109,7 @@ var schema = {
                 },
                 street: {
                     type: ["string", "null"],
-                    pre: "addThe"
+                    transforms: "addThe"
                 },
                 city: {
                     type: "string",
@@ -104,7 +117,7 @@ var schema = {
                 },
                 country: {
                     type: "string",
-                    pre: "toUppercase"
+                    transforms: "toUppercase"
                     required: true,
                     validators: {
                         enum: ["GB", "US", "AU"]
@@ -115,11 +128,11 @@ var schema = {
         dateOfBirth: {
             type: "date", // value must be a date object
             required: true,
-            pre: [
+            transforms: [
                 // custom function to convert unix timestamp to date
                 function (value) {
                     if (typeof value === "number") {
-                        obj[key] = new Date(value*1000);
+                        obj[key] = new Date(value * 1000);
                     }
                 },
                 "toDate" // cast date string into date
@@ -131,6 +144,8 @@ var schema = {
 ```
 
 ## Usage
+
+When Hannibal is customised and the schema defined objects can be validated.
 
 ```js
 // Create a test function
@@ -156,7 +171,7 @@ var plan1 = testSchema(inputData);
 plan1.isValid // true
 
 // Show all errors from validation
-plan1.errors // []
+plan1.errors // null
 
 // Output valid data
 plan1.data // {name: "Hannibal Smith", ...}
@@ -180,7 +195,7 @@ var plan2 = testSchema(inputData2)
 plan2.isValid // false
 
 // Show all errors from validation
-plan2.errors // [{petName: "should end in fy, like 'fluffy'"}, {address: {street: "is required"}}, {dateOfBirth: "is required"}]
+plan2.errors // {petName: {isFluffy: "should end in fy, like 'fluffy'"}}, {address: {street: {required: "key was not provided"}}, {dateOfBirth: {required: "key was not provided"}}]
 
 // Output valid data
 plan2.data // {name: "B A Baracus", age: 38, ...}
@@ -190,7 +205,7 @@ plan2.data // {name: "B A Baracus", age: 38, ...}
 
 ### Types
 
-Types represent the sudo primitive types allowed. These are provided as either a string or array of strings.
+Types represent the primitive types allowed. These are provided as either a string or array of strings.
 
 Available types:
 
@@ -203,29 +218,28 @@ Available types:
  * object
  * null
 
-### Pre
+### Transforms
 
-Pre functions are run before validation and can be used to convert a value. These are provided as a single or array of strings or functions.
+Transform functions are run before validation and can be used to convert a value. These are provided as a single or array of strings or functions.
 
-Packaged pre filters include:
+Packaged transforms include:
 
  * toString - convert numbers into strings
  * toInteger - convert strings into integers
  * toFloat  - convert strings into floats
  * toDate  - convert strings into dates
  * toArray  - wrap non arrays into an array
- * JSONtoObject - parse json into an object
 
-See `lib/pre` for the full list.
+See `lib/transforms` for the full list.
 
-Custom pre functions can be added in-line via functions or registered into Hannibal. The functions take the value and any options passed when performing validation:
+Custom transform functions can be added in-line via functions or registered into Hannibal. The functions take the value and any options passed when performing validation:
 
 ```js
 var Hannibal = require("hannibal");
 var hannibal = new Hannibal();
 var validator = hannibal.create({
     type: "number",
-    pre: function (value, opts) {
+    transforms: function (value, opts) {
         return value * opts.multiplier
     }
 });

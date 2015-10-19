@@ -1,13 +1,13 @@
 var expect = require("expect.js");
 var Hannibal = require("../../index");
 
-describe("pre", function () {
+describe("transforms", function () {
   var hannibal = new Hannibal();
 
   describe("toString", function () {
     var testSchema = hannibal.create({
       type: "string",
-      pre: "toString"
+      transforms: "toString"
     });
 
     it("should turn a number into a string", function () {
@@ -46,7 +46,7 @@ describe("pre", function () {
   describe("toInteger", function () {
     var testSchema = hannibal.create({
       type: "number",
-      pre: "toInteger"
+      transforms: "toInteger"
     });
 
     it("should turn a float into an integer", function () {
@@ -93,7 +93,7 @@ describe("pre", function () {
   describe("toFloat", function () {
     var testSchema = hannibal.create({
       type: "number",
-      pre: "toFloat"
+      transforms: "toFloat"
     });
 
     it("should turn a float into a float", function () {
@@ -140,7 +140,7 @@ describe("pre", function () {
   describe("toArray", function () {
     var testSchema = hannibal.create({
       type: "array",
-      pre: "toArray"
+      transforms: "toArray"
     });
 
     it("should turn a number into a number", function () {

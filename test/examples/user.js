@@ -7,7 +7,7 @@ var testSchema = new Hannibal().create({
   schema: {
     id: {
       type: "number",
-      pre: "toInteger"
+      transforms: "toInteger"
     },
     name: {
       type: "string",
@@ -27,7 +27,7 @@ var testSchema = new Hannibal().create({
         },
         country: {
           type: "string",
-          pre: ["toString", "toUpperCase"],
+          transforms: ["toString", "toUpperCase"],
           required: true,
           validators: {
             enum: ["GB", "US", "AU"]
@@ -42,7 +42,7 @@ var testSchema = new Hannibal().create({
         schema: {
           value: {
             type: "string",
-            pre: ["toString", "trim"],
+            transforms: ["toString", "trim"],
             required: true,
             validators: {
               min: 9,

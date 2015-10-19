@@ -3,7 +3,6 @@ var Hannibal = require("../../index");
 
 describe("validators.array", function () {
   var hannibal = new Hannibal();
-  var hannibal = new Hannibal();
 
   describe("min length", function () {
     var testSchema = hannibal.create({

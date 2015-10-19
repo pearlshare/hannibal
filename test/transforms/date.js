@@ -1,13 +1,13 @@
 var expect = require("expect.js");
 var Hannibal = require("../../index");
 
-describe("pre", function () {
+describe("transforms", function () {
   var hannibal = new Hannibal();
 
   describe("date", function () {
     var testSchema = hannibal.create({
       type: "date",
-      pre: "toDate"
+      transforms: "toDate"
     });
 
     it("should coerce a string into a date", function () {

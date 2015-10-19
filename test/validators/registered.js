@@ -4,7 +4,7 @@ var Hannibal = require("../../index");
 describe("validators", function () {
 
   var additions = {
-    pre: {
+    transforms: {
       addSmith: function (value) {
         if (value === "Hannibal") {
           return value + " Smith";
@@ -28,7 +28,7 @@ describe("validators", function () {
 
   var schema = {
     type: "string",
-    pre: "addSmith",
+    transforms: "addSmith",
     validators: {
       checkName: "Mad Dog Murdoch"
     }

@@ -1,13 +1,13 @@
 var expect = require("expect.js");
 var Hannibal = require("../../index");
 
-describe("pre", function () {
+describe("transforms", function () {
   var hannibal = new Hannibal();
 
   describe("compact", function () {
     var testSchema = hannibal.create({
       type: "array",
-      pre: "compact"
+      transforms: "compact"
     });
 
     it("should remove empty values from an array", function () {

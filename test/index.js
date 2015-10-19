@@ -1,6 +1,6 @@
 require("./default");
 require("./examples");
-require("./pre");
+require("./transforms");
 require("./types");
 require("./validator");
 require("./validators");
