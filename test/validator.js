@@ -15,8 +15,29 @@ describe("create", function () {
   it("should throw an error if not an object", function () {
     expect(hannibal.create).withArgs("should throw").to.throwError();
   });
+});
 
-  it("should throw an error if the schema is invalid", function () {
+describe("addValidators", function () {
+  it("should add a set of validators", function () {
+    var hannibal = new Hannibal();
+    hannibal.addValidators({
+      string: {
+        isName: function (value, name) {
+          if (value !== name) {
+            throw new Error("is not " + name);
+          }
+        }
+      }
+    });
 
+    var validator = hannibal.create({
+      type: "string",
+      validators: {
+        isName: "Face"
+      }
+    });
+
+    expect(validator("Face").isValid).to.be(true);
+    expect(validator("BA").isValid).to.be(false);
   });
 });
