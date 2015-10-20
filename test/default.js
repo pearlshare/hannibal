@@ -23,6 +23,26 @@ describe("validator default", function () {
     });
   });
 
+  describe("default with required", function () {
+    var testSchema = hannibal.create({
+      default: "Face",
+      required: true
+    });
+
+    it("should return true if a value is given", function () {
+      var output = testSchema("Hannibal");
+
+      expect(output.isValid).to.be(true);
+    });
+
+    it("should fail to validate if not a string", function () {
+      var output = testSchema(undefined);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql("Face");
+    });
+  });
+
   describe("default false", function () {
     var testSchema = hannibal.create({
       default: false
