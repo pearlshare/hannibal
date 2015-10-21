@@ -9,14 +9,21 @@ describe("validator default", function () {
       default: "Face"
     });
 
-    it("should return true if a value is given", function () {
+    it("should be valid if a value is given", function () {
       var output = testSchema("Hannibal");
 
       expect(output.isValid).to.be(true);
     });
 
-    it("should fail to validate if not a string", function () {
+    it("should set default if undefined", function () {
       var output = testSchema(undefined);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql("Face");
+    });
+
+    it("should set default if null", function () {
+      var output = testSchema(null);
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.eql("Face");
@@ -29,14 +36,21 @@ describe("validator default", function () {
       required: true
     });
 
-    it("should return true if a value is given", function () {
+    it("should not set default if value is given", function () {
       var output = testSchema("Hannibal");
 
       expect(output.isValid).to.be(true);
     });
 
-    it("should fail to validate if not a string", function () {
+    it("should set default if undefined", function () {
       var output = testSchema(undefined);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql("Face");
+    });
+
+    it("should set default if null", function () {
+      var output = testSchema(null);
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.eql("Face");
@@ -48,15 +62,22 @@ describe("validator default", function () {
       default: false
     });
 
-    it("should return true if a value is given", function () {
+    it("should not set default if a value is given", function () {
       var output = testSchema("Hannibal");
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.eql("Hannibal");
     });
 
-    it("should fail to validate if not a string", function () {
-      var output = testSchema();
+    it("should set default if undefined", function () {
+      var output = testSchema(undefined);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.eql(false);
+    });
+
+    it("should set default if null", function () {
+      var output = testSchema(null);
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.eql(false);
@@ -73,21 +94,21 @@ describe("validator default", function () {
       }
     });
 
-    it("should return true if a value is given", function () {
+    it("should not set default if a value is given on the nested object", function () {
       var output = testSchema({name: "Hannibal"});
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.eql({name: "Hannibal"});
     });
 
-    it("should return true if a object is not given", function () {
+    it("should not add nested object no nested object is given", function () {
       var output = testSchema();
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.be(undefined);
     });
 
-    it("should set the name if it isn't defined", function () {
+    it("should set the default on the nested object if it isn't defined", function () {
       var output = testSchema({});
 
       expect(output.isValid).to.be(true);

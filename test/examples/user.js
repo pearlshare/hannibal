@@ -1,8 +1,8 @@
 var expect = require("expect.js");
 var Hannibal = require("../../index");
+var hannibal = new Hannibal();
 
-
-var testSchema = new Hannibal().create({
+var testSchema = hannibal.create({
   type: "object",
   schema: {
     id: {
@@ -63,7 +63,6 @@ var testSchema = new Hannibal().create({
 });
 
 describe("examples", function () {
-  var hannibal = new Hannibal();
 
   describe("valid user", function () {
 
@@ -203,6 +202,43 @@ describe("examples", function () {
       expect(result.error.address).to.be.an("object").and.to.have.keys("street");
       expect(result.error.address.street).to.be.an("object").and.have.keys("required");
       expect(result.error.name).to.be.a("object").and.have.keys("type");
+    });
+
+    it("should be invalid with fields with the wrong type", function () {
+      var user = {
+        id: "5",
+        name: "John Smith",
+        aka: "Hannibal",
+        address: {
+          street: "The underground",
+          country: "us"
+        },
+        contacts: [
+          {
+            type: "phone",
+            value: "+01 111111111"
+          },
+          {
+            type: "pigeon",
+            value: "written note"
+          }
+        ]
+      };
+      var result = testSchema(user);
+
+      expect(result.isValid).to.be(false);
+      expect(result.data).to.be.a("object");
+      expect(result.data.id).to.be.a("number").and.to.equal(5);
+      expect(result.data.name).to.be.a("string").and.to.equal(user.name);
+      expect(result.data.aka).to.be.a("string").and.to.equal(user.aka);
+      expect(result.data.address).to.be.a("object").and.to.have.keys("street", "country");
+      expect(result.data.address.street).to.equal("The underground");
+      expect(result.data.address.country).to.equal("US");
+      expect(result.error.contacts).to.be.an("array").and.to.have.length(2);
+      expect(result.error.contacts[0]).to.be(undefined);
+      expect(result.error.contacts[1]).to.be.an("object");
+      expect(result.error.contacts[1].type).to.be.an("object").and.have.keys("enum");
+      expect(result.error.contacts[1].type.enum).to.match(/pigeon/);
     });
   });
 });

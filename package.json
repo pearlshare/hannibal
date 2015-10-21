@@ -1,6 +1,6 @@
 {
   "name": "hannibal",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Validate JSON",
   "repository": {
     "git": "https://github.com/oliverbrooks/hannibal.git"
