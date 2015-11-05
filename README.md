@@ -8,7 +8,7 @@
 
 ## What's it for?
 
-Checking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other API's as well as to create a lightweight ORM.
+Checking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other APIs as well as to create a lightweight ORM.
 
 ## Objectives
 
