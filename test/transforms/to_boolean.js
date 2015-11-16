@@ -105,5 +105,40 @@ describe("transforms", function () {
       var output2 = testSchema("falsee");
       expect(output2.isValid).to.be(false);
     });
+
+    /**
+     * Number tests
+     */
+    it("should turn 1 into a true", function () {
+      var output = testSchema(1);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(true);
+    });
+
+    it("should turn '1' into a true", function () {
+      var output = testSchema('1');
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(true);
+    });
+
+    it("should turn 0 into a false", function () {
+      var output = testSchema(0);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(false);
+    });
+
+    it("should turn '0' into a false", function () {
+      var output = testSchema(0);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(false);
+    });
   });
 });
