@@ -3,6 +3,7 @@ require("./compact");
 require("./custom");
 require("./deburr");
 require("./to_array");
+require("./to_boolean");
 require("./to_date");
 require("./to_float");
 require("./to_integer");
