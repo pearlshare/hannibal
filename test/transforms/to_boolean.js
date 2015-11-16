@@ -4,7 +4,7 @@ var Hannibal = require("../../index");
 describe("transforms", function () {
   var hannibal = new Hannibal();
 
-  describe.only("toBoolean", function () {
+  describe("toBoolean", function () {
     var testSchema = hannibal.create({
       type: "boolean",
       transforms: "toBoolean"
