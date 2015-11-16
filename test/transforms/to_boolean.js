@@ -18,7 +18,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(true);
     });
 
-    it("should turn 'bon/one' into a false", function () {
+    it("should not validate 'bon/one'", function () {
       var output1 = testSchema("bon");
       expect(output1.isValid).to.be(false);
 
@@ -34,7 +34,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(true);
     });
 
-    it("should turn 'nyes/yess' into a false", function () {
+    it("should not validate 'nyes/yess'", function () {
       var output1 = testSchema("nyes");
       expect(output1.isValid).to.be(false);
 
@@ -50,7 +50,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(true);
     });
 
-    it("should turn 'ttrue/truee' into a false", function () {
+    it("should not validate 'ttrue/truee'", function () {
       var output1 = testSchema("ttrue");
       expect(output1.isValid).to.be(false);
 
@@ -66,7 +66,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(false);
     });
 
-    it("should turn 'ooff/offf' into a false", function () {
+    it("should not validate 'ooff/offf'", function () {
       var output1 = testSchema("ooff");
       expect(output1.isValid).to.be(false);
 
@@ -82,7 +82,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(false);
     });
 
-    it("should turn 'nno/noo' into a false", function () {
+    it("should not validate 'nno/noo'", function () {
       var output1 = testSchema("nno");
       expect(output1.isValid).to.be(false);
 
@@ -98,7 +98,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(false);
     });
 
-    it("should turn 'ffalse/falsee' into a false", function () {
+    it("should not validate 'ffalse/falsee'", function () {
       var output1 = testSchema("ffalse");
       expect(output1.isValid).to.be(false);
 
