@@ -310,8 +310,8 @@ Schemas are objects which can be easily composed together.
 
 One off custom validators and transforms can be added directly to a schema definition.
 
-```jsa
-{
+```js
+hannibal.create({
     type: "string",
     transforms: function (value) {
         return "I'm transforming " + value + " with my additions";
@@ -323,7 +323,7 @@ One off custom validators and transforms can be added directly to a schema defin
             }
         }
     }
-}
+});
 ```
 
 Transforms can accept an additional argument of an object. This is provided as a second argument to the validator. This is useful if your transform depends on other objects such as a user.
