@@ -125,6 +125,22 @@ describe("transforms", function () {
       expect(output.data).to.eql(true);
     });
 
+    it("should turn 99 into a true", function () {
+      var output = testSchema(99);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(true);
+    });
+
+    it("should turn '99' into a true", function () {
+      var output = testSchema('99');
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(true);
+    });
+
     it("should turn 0 into a false", function () {
       var output = testSchema(0);
 
@@ -135,6 +151,22 @@ describe("transforms", function () {
 
     it("should turn '0' into a false", function () {
       var output = testSchema(0);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(false);
+    });
+
+    it("should turn -99 into a false", function () {
+      var output = testSchema(-99);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(false);
+    });
+
+    it("should turn '-99' into a false", function () {
+      var output = testSchema(-99);
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.be.a("boolean");
