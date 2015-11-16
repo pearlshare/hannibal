@@ -32,7 +32,7 @@ var Hannibal = require("hannibal");
 var hannibal = new Hannibal();
 
 // Create a validator by adding a schema
-var validator = hannibal.create({
+var basicValidator = hannibal.create({
     type: "object",
     schema: {
         name: {
@@ -56,7 +56,7 @@ var validator = hannibal.create({
 });
 
 // Check a valid user
-var rslt1 = validator({
+var basicRslt1 = basicValidator({
     name: "John Smith",
     age: 53,
     address: {
@@ -64,17 +64,17 @@ var rslt1 = validator({
         city: "Los Angeles"
     }
 })
-assert(rslt1.isValid);
+assert(basicRslt1.isValid);
 
 // Check an invalid user
-var rslt2 = validator({
+var basicRslt2 = basicValidator({
     name: "Templeton Peck",
     age: "foo",
     address: {
         city: "Los Angeles"
     }
 })
-assert(!rslt2.isValid);
+assert(!basicRslt2.isValid);
 ```
 
 ## Schema building
@@ -163,7 +163,7 @@ To customise create a new instance passing a customisation object. The customisa
 var Hannibal = require("hannibal");
 
 // Create a Hannibal instance with custom filters and validators registered
-var hannibal2 = new Hannibal({
+var hannibal = new Hannibal({
     transforms: {
         addThe: function (value) {
             if (typeof value === "string") {
@@ -189,7 +189,7 @@ var hannibal2 = new Hannibal({
 
 ```js
 // Create a validator from the customised Hannibal instance
-var validator3 = hannibal2.create({
+var customValidator = hannibal.create({
     type: "object",
     schema: {
         name: {
@@ -261,7 +261,7 @@ var validator3 = hannibal2.create({
 
 ```js
 
-var plan1 = validator3({
+var customRslt1 = customValidator({
     name: "Hannibal Smith",
     age: 53,
     phone: "+01 2233445566",
@@ -275,15 +275,15 @@ var plan1 = validator3({
 });
 
 // Boolean if the object is valid
-assert(plan1.isValid);
+assert(customRslt1.isValid);
 
 // Show all errors from validation
-assert.equal(plan1.error, null);
+assert.equal(customRslt1.error, null);
 
 // Output valid data
-assert.equal(plan1.data.name, "Hannibal Smith");
+assert.equal(customRslt1.data.name, "Hannibal Smith");
 
-var plan2 = validator3({
+var customRslt2 = customValidator({
     name: "B A Baracus",
     age: 38,
     phone: "foobar",
@@ -295,13 +295,13 @@ var plan2 = validator3({
 });
 
 // Boolean if the object is valid
-assert(!plan2.isValid);
+assert(!customRslt2.isValid);
 
 // Show all errors from validation
-assert.equal(plan2.error.phone.regex, "string does not match regex");
+assert.equal(customRslt2.error.phone.regex, "string does not match regex");
 
 // Output valid data
-assert.equal(plan2.data.name, "B A Baracus");
+assert.equal(customRslt2.data.name, "B A Baracus");
 ```
 
 ## Pro tips
@@ -330,8 +330,8 @@ Transforms can accept an additional argument of an object. This is provided as a
 
 ```js
 var Hannibal = require("hannibal");
-var hannibal4 = new Hannibal();
-var validator4 = hannibal.create({
+var proHannibal = new Hannibal();
+var proValidator = proHannibal.create({
     type: "number",
     // Transform which takes the value and arguments
     transforms: function (value, args) {
@@ -339,9 +339,9 @@ var validator4 = hannibal.create({
     }
 });
 // Define validator with second argument to pass to all transforms
-var rslt6 = validator4(2, {multiplier: 5})
-assert.equal(rslt6.isValid, true);
-assert.equal(rslt6.data, 10);
+var proRslt = proValidator(2, {multiplier: 5})
+assert.equal(proRslt.isValid, true);
+assert.equal(proRslt.data, 10);
 ```
 
 ## Test
