@@ -56,23 +56,25 @@ var validator = hannibal.create({
 });
 
 // Check a valid user
-validator({
+var rslt1 = validator({
     name: "John Smith",
     age: 53,
     address: {
         street: "The underground",
         city: "Los Angeles"
     }
-}) // {isValid: true, data: {name: "John Smith", ...}}
+})
+assert(rslt1.isValid);
 
 // Check an invalid user
-validator({
+var rslt2 = validator({
     name: "Templeton Peck",
-    age: "38",
+    age: "foo",
     address: {
         city: "Los Angeles"
     }
-}) // {isValid: false, error: {age: {type: "is not a string", address: {street: {required: "is not provided"}}}}, data: {name: "Templeton Peck"}}
+})
+assert(!rslt2.isValid);
 ```
 
 ## Schema building
@@ -161,7 +163,7 @@ To customise create a new instance passing a customisation object. The customisa
 var Hannibal = require("hannibal");
 
 // Create a Hannibal instance with custom filters and validators registered
-var hannibal = new Hannibal({
+var hannibal2 = new Hannibal({
     transforms: {
         addThe: function (value) {
             if (typeof value === "string") {
@@ -187,7 +189,7 @@ var hannibal = new Hannibal({
 
 ```js
 // Create a validator from the customised Hannibal instance
-var validator = hannibal.create({
+var validator3 = hannibal2.create({
     type: "object",
     schema: {
         name: {
@@ -200,7 +202,7 @@ var validator = hannibal.create({
         },
         age: {
             type: ["number", "null"], // value must be an number or null
-            transforms: "toInt", // before validation perform a built in function
+            transforms: "toInteger", // before validation perform a built in function
             validators: {
                 min: 0, // min value
                 max: 120 // max value
@@ -209,7 +211,7 @@ var validator = hannibal.create({
         phone: {
             type: "string",
             validators: {
-                regex: "\+\d{2,3}\s\d{10,12}$" // Check regex match
+                regex: "^\\+\\d{2,3}\\s\\d{10,12}$" // Check regex match
             }
         },
         gender: {
@@ -223,7 +225,7 @@ var validator = hannibal.create({
             schema: {
                 house: {
                     type: "string",
-                    required: true // If the address object is present then it must have a 'house' key
+                    required: false, // If the address object is present then it must have a 'house' key
                     validators: {
                         bannedHouses: "Garage full of tools"
                     }
@@ -238,7 +240,6 @@ var validator = hannibal.create({
                 },
                 country: {
                     type: "string",
-                    transforms: "toUppercase",
                     required: true,
                     validators: {
                         enum: ["GB", "US", "AU"]
@@ -260,7 +261,7 @@ var validator = hannibal.create({
 
 ```js
 
-var plan1 = validator({
+var plan1 = validator3({
     name: "Hannibal Smith",
     age: 53,
     phone: "+01 2233445566",
@@ -274,18 +275,18 @@ var plan1 = validator({
 });
 
 // Boolean if the object is valid
-plan1.isValid // true
+assert(plan1.isValid);
 
 // Show all errors from validation
-plan1.error // null
+assert.equal(plan1.error, null);
 
 // Output valid data
-plan1.data // {name: "Hannibal Smith", ...}
+assert.equal(plan1.data.name, "Hannibal Smith");
 
-var plan2 = validator({
+var plan2 = validator3({
     name: "B A Baracus",
-    age: "38",
-    phone: "+01 6665554443",
+    age: 38,
+    phone: "foobar",
     gender: "male",
     address: {
         city: "Los Angeles",
@@ -294,13 +295,13 @@ var plan2 = validator({
 });
 
 // Boolean if the object is valid
-plan2.isValid // false
+assert(!plan2.isValid);
 
 // Show all errors from validation
-plan2.error // {address: {street: {required: "key was not provided"}},dateOfBirth: {required: "key was not provided"}}
+assert.equal(plan2.error.phone.regex, "string does not match regex");
 
 // Output valid data
-plan2.data // {name: "B A Baracus", age: 38, ...}
+assert.equal(plan2.data.name, "B A Baracus");
 ```
 
 ## Pro tips
@@ -309,7 +310,7 @@ Schemas are objects which can be easily composed together.
 
 One off custom validators and transforms can be added directly to a schema definition.
 
-```js
+```jsa
 {
     type: "string",
     transforms: function (value) {
@@ -329,8 +330,8 @@ Transforms can accept an additional argument of an object. This is provided as a
 
 ```js
 var Hannibal = require("hannibal");
-var hannibal = new Hannibal();
-var validator = hannibal.create({
+var hannibal4 = new Hannibal();
+var validator4 = hannibal.create({
     type: "number",
     // Transform which takes the value and arguments
     transforms: function (value, args) {
@@ -338,7 +339,9 @@ var validator = hannibal.create({
     }
 });
 // Define validator with second argument to pass to all transforms
-validator(2, {multiplier: 5}) // {isValid: true, data: 10, ...}
+var rslt6 = validator4(2, {multiplier: 5})
+assert.equal(rslt6.isValid, true);
+assert.equal(rslt6.data, 10);
 ```
 
 ## Test
