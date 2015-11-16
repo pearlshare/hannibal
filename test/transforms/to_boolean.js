@@ -140,5 +140,24 @@ describe("transforms", function () {
       expect(output.data).to.be.a("boolean");
       expect(output.data).to.eql(false);
     });
+
+    /**
+     * Boolean tests
+     */
+    it("should turn true into a true", function () {
+      var output = testSchema(true);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(true);
+    });
+
+    it("should turn false into a false", function () {
+      var output = testSchema(false);
+
+      expect(output.isValid).to.be(true);
+      expect(output.data).to.be.a("boolean");
+      expect(output.data).to.eql(false);
+    });
   });
 });
