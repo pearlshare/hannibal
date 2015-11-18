@@ -6,12 +6,12 @@
 
 ![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
 
-## What's it for?
 
+## What's it for?
 Checking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other APIs as well as to create a lightweight ORM.
 
-## Objectives
 
+## Objectives
 Validate an object, array or primitive and provide clear error reporting.
 
 Easily extensible functionality using simple JavaScript.
@@ -20,8 +20,8 @@ Provide a handy set of common validations such as min/max values, regex and enum
 
 Be fast and lightweight.
 
-## Basic usage
 
+## Basic usage
 Create a validator to check a user object is valid.
 
 ```js
@@ -75,12 +75,12 @@ validator({
 }) // {isValid: false, error: {age: {type: "is not a string", address: {street: {required: "is not provided"}}}}, data: {name: "Templeton Peck"}}
 ```
 
-## Schema building
 
+## Schema building
 The schema defines the validation rules.
 
-### Types
 
+### Types
 Types represent the primitive types allowed. These are provided as either a string or array of strings.
 
 Available types:
@@ -94,12 +94,12 @@ Available types:
  * object
  * null
 
-### Required
 
+### Required
 When set to `true` the required statement will error if the given key is not provided in the input object. Note this does not check the value, purely the presence of the key.
 
-### Validators
 
+### Validators
 Validators check the value against a set of criteria. Available validators are:
 
 String:
@@ -132,8 +132,8 @@ Custom validators can be given via the `custom` key or registered with `hannibal
 
 Custom validators should throw an instance of `Error` with a message.
 
-### Transforms
 
+### Transforms
 Transforms run before validation and can be used to convert or cast a value. These are provided as a single or array of strings or functions.
 
 Packaged transforms include:
@@ -148,14 +148,14 @@ See `lib/transforms.js` for the full list.
 
 Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema. 
 
-## Advanced usage
 
+## Advanced usage
 Hannibal provides basic validation functionality out of the box and also enables easy customisation.
 
 To customise create a new instance passing a customisation object. The customisation object will will add to and override the default set or `transforms` and `validators`.
 
-### Customise Hannibal
 
+### Customise Hannibal
 ```js
 // Load Hannibal
 var Hannibal = require("hannibal");
@@ -183,8 +183,8 @@ var hannibal = new Hannibal({
 });
 ```
 
-### Define schema
 
+### Define schema
 ```js
 // Create a validator from the customised Hannibal instance
 var validator = hannibal.create({
@@ -256,10 +256,9 @@ var validator = hannibal.create({
 });
 ```
 
+
 ### Validate objects
-
 ```js
-
 var plan1 = validator({
     name: "Hannibal Smith",
     age: 53,
@@ -303,8 +302,8 @@ plan2.error // {address: {street: {required: "key was not provided"}},dateOfBirt
 plan2.data // {name: "B A Baracus", age: 38, ...}
 ```
 
-## Pro tips
 
+## Pro tips
 Schemas are objects which can be easily composed together.
 
 One off custom validators and transforms can be added directly to a schema definition.
@@ -341,21 +340,6 @@ var validator = hannibal.create({
 validator(2, {multiplier: 5}) // {isValid: true, data: 10, ...}
 ```
 
+
 ## Test
-
 Run tests using `npm test`.
-
-## TODO
-
-* Add alias functionality to rename keys
-* Validate incoming schema
-    - perhaps use hannibal on itself?!?
-* Post validation transforms
-    - Useful when an API input needs validating then converting to an internal format
-* Strict mode
-    - throw an error if additional keys are required
-* Throw on error
-    - If an object fails to validate throw an error with details
-* Performance testing/improvements
-    - Write benchmark tests
-    - Find routine shortcuts
