@@ -73,8 +73,25 @@ var basicRslt2 = basicValidator({
     address: {
         city: "Los Angeles"
     }
-})
-assert(!basicRslt2.isValid);
+});
+
+assert.deepEqual(basicRslt2, {
+  isValid: false,
+  originalData: {
+    name: 'Templeton Peck',
+    age: 'foo',
+    address: { city: 'Los Angeles' }
+  },
+  data: {
+    name: 'Templeton Peck',
+    address: { city: 'Los Angeles' }
+  },
+  error: {
+    age: {
+      type: '\'string\' was not in allowed types: number' 
+    }
+  }
+});
 ```
 
 ## Schema building
