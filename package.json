@@ -3,6 +3,7 @@
   "version": "0.2.9",
   "description": "Validate JSON",
   "repository": {
+    "type": "git",
     "git": "https://github.com/oliverbrooks/hannibal.git"
   },
   "main": "index.js",
