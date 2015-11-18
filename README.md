@@ -7,7 +7,7 @@
 ![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
 
 
-## What's it for?
+## What's it for?
 Checking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other APIs as well as to create a lightweight ORM.
 
 
@@ -80,7 +80,7 @@ validator({
 The schema defines the validation rules.
 
 
-### Types
+### Types
 Types represent the primitive types allowed. These are provided as either a string or array of strings.
 
 Available types:
@@ -95,7 +95,7 @@ Available types:
  * null
 
 
-### Required
+### Required
 When set to `true` the required statement will error if the given key is not provided in the input object. Note this does not check the value, purely the presence of the key.
 
 
@@ -155,7 +155,7 @@ Hannibal provides basic validation functionality out of the box and also enables
 To customise create a new instance passing a customisation object. The customisation object will will add to and override the default set or `transforms` and `validators`.
 
 
-### Customise Hannibal
+### Customise Hannibal
 ```js
 // Load Hannibal
 var Hannibal = require("hannibal");
