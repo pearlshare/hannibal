@@ -1,0 +1,100 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/Oli/.nvm/versions/node/v4.2.1/bin/node',
+1 verbose cli   '/Users/Oli/.nvm/versions/node/v4.2.1/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/Oli/dev/pearlshare/apps/ps-modules/hannibal',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/Oli/.npm/hannibal/0.2.9/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/Oli/.npm/hannibal/0.2.9/package.tgz',
+9 verbose tar pack   '/Users/Oli/dev/pearlshare/apps/ps-modules/hannibal' ]
+10 verbose tarball /Users/Oli/.npm/hannibal/0.2.9/package.tgz
+11 verbose folder /Users/Oli/dev/pearlshare/apps/ps-modules/hannibal
+12 info prepublish hannibal@0.2.9
+13 verbose addLocalTarball adding from inside cache /Users/Oli/.npm/hannibal/0.2.9/package.tgz
+14 silly cache afterAdd hannibal@0.2.9
+15 verbose afterAdd /Users/Oli/.npm/hannibal/0.2.9/package/package.json not in flight; writing
+16 verbose afterAdd /Users/Oli/.npm/hannibal/0.2.9/package/package.json written
+17 silly publish { name: 'hannibal',
+17 silly publish   version: '0.2.9',
+17 silly publish   description: 'Validate JSON',
+17 silly publish   repository:
+17 silly publish    { type: 'git',
+17 silly publish      git: 'https://github.com/pearlshare/hannibal.git' },
+17 silly publish   main: 'index.js',
+17 silly publish   scripts: { test: 'mocha test/index.js' },
+17 silly publish   keywords: [ 'JSON', 'validation', 'errors' ],
+17 silly publish   author: '',
+17 silly publish   tonicExampleFilename: 'examples/tonic.js',
+17 silly publish   license: 'MIT',
+17 silly publish   devDependencies:
+17 silly publish    { eslint: '^0.24.0',
+17 silly publish      'expect.js': '^0.3.1',
+17 silly publish      mocha: '^2.3.3',
+17 silly publish      'readme-tester': 'git://github.com/orangemug/readme-tester.git#v0.3.0' },
+17 silly publish   dependencies: { lodash: '^3.10.1' },
+17 silly publish   readme: '# Hannibal\n\n![circleci](https://circleci.com/gh/pearlshare/hannibal.png?style=shield)\n![Dependency Status](https://david-dm.org/pearlshare/hannibal.svg)\n![Dev Dependency Status](https://david-dm.org/pearlshare/hannibal/dev-status.svg)\n\n![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)\n\n\n## What\'s it for?\nChecking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other APIs as well as to create a lightweight ORM.\n\n\n## Objectives\nValidate an object, array or primitive and provide clear error reporting.\n\nEasily extensible functionality using simple JavaScript.\n\nProvide a handy set of common validations such as min/max values, regex and enums to get going quickly but without going overboard.\n\nBe fast and lightweight.\n\n\n## Basic usage\nCreate a validator to check a user object is valid.\n\n```js\n// Load Hannibal\nvar Hannibal = require("hannibal");\n\n// Create a Hannibal instance\nvar hannibal = new Hannibal();\n\n// Create a validator by adding a schema\nvar basicValidator = hannibal.create({\n    type: "object",\n    schema: {\n        name: {\n            type: "string"\n        },\n        age: {\n            type: "number"\n        },\n        address: {\n            type: "object",\n            schema: {\n                street: {\n                    type: "string"\n                },\n                city: {\n                    type: "string"\n                }\n            }\n        }\n    }\n});\n\n// Check a valid user\nvar basicRslt1 = basicValidator({\n    name: "John Smith",\n    age: 53,\n    address: {\n        street: "The underground",\n        city: "Los Angeles"\n    }\n})\nassert(basicRslt1.isValid);\n\n// Check an invalid user\nvar basicRslt2 = basicValidator({\n    name: "Templeton Peck",\n    age: "foo",\n    address: {\n        city: "Los Angeles"\n    }\n});\n\nassert.deepEqual(basicRslt2, {\n  isValid: false,\n  originalData: {\n    name: \'Templeton Peck\',\n    age: \'foo\',\n    address: { city: \'Los Angeles\' }\n  },\n  data: {\n    name: \'Templeton Peck\',\n    address: { city: \'Los Angeles\' }\n  },\n  error: {\n    age: {\n      type: \'\\\'string\\\' was not in allowed types: number\' \n    }\n  }\n});\n```\n\n\n## Schema building\nThe schema defines the validation rules.\n\n\n### Types\nTypes represent the primitive types allowed. These are provided as either a string or array of strings.\n\nAvailable types:\n\n * string\n * date\n * boolean\n * time\n * number\n * array\n * object\n * null\n\n\n### Required\nWhen set to `true` the required statement will error if the given key is not provided in the input object. Note this does not check the value, purely the presence of the key.\n\n\n### Validators\nValidators check the value against a set of criteria. Available validators are:\n\nString:\n\n * regex - perform a regex match\n * min - check the minimum length\n * max - check the maximum length\n * enum - check the value is contained in a given array\n\nNumber:\n\n * min - minimum value\n * max - maximum value\n * enum - check the value is contained in a given array\n * minPrecision - minimum number of decimal places\n * maxPrecision - maximum number of decimal places\n\nDate/Time:\n\n * min - minimum value\n * max - maximum value\n * enum - check the value is contained in a given array\n\nArray:\n\n * min - check the minimum length\n * max - check the maximum length\n\nCustom validators can be given via the `custom` key or registered with `hannibal`. Custom validators are provided with the value to validate and the argument provided in the schema.\n\nCustom validators should throw an instance of `Error` with a message.\n\n\n### Transforms\nTransforms run before validation and can be used to convert or cast a value. These are provided as a single or array of strings or functions.\n\nPackaged transforms include:\n\n * toString - convert numbers into strings\n * toInteger - convert strings into integers\n * toFloat  - convert strings into floats\n * toDate  - convert strings into dates\n * toArray  - wrap non arrays into an array\n\nSee `lib/transforms.js` for the full list.\n\nCustom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema. \n\n\n## Advanced usage\nHannibal provides basic validation functionality out of the box and also enables easy customisation.\n\nTo customise create a new instance passing a customisation object. The customisation object will will add to and override the default set or `transforms` and `validators`.\n\n\n### Customise Hannibal\n```js\n// Load Hannibal\nvar Hannibal = require("hannibal");\n\n// Create a Hannibal instance with custom filters and validators registered\nvar hannibal = new Hannibal({\n    transforms: {\n        addThe: function (value) {\n            if (typeof value === "string") {\n                return "The " + value;\n            } else {\n                return value;\n            }\n        }\n    },\n    validators: {\n        string: {\n            bannedHouses: function (value, attr) {\n                if (value === attr) {\n                    throw new Error("The A-Team can\'t stay in a: " + value);\n                }\n            }\n        }\n    }\n});\n```\n\n\n### Define schema\n```js\n// Create a validator from the customised Hannibal instance\nvar customValidator = hannibal.create({\n    type: "object",\n    schema: {\n        name: {\n            type: "string", // value must be a string if present\n            required: true, // If the key is missing will raise error\n            validators: {\n                min: 2, // Minimum value string length\n                max: 50 // Maximum value string length\n            }\n        },\n        age: {\n            type: ["number", "null"], // value must be an number or null\n            transforms: "toInteger", // before validation perform a built in function\n            validators: {\n                min: 0, // min value\n                max: 120 // max value\n            }\n        },\n        phone: {\n            type: "string",\n            validators: {\n                regex: "^\\\\+\\\\d{2,3}\\\\s\\\\d{10,12}$" // Check regex match\n            }\n        },\n        gender: {\n            type: "string",\n            validators: {\n                enum: ["male", "female"] // value must be one of male/female\n            }\n        },\n        address: {\n            type: ["object", "null"], // allow an object or null\n            schema: {\n                house: {\n                    type: "string",\n                    required: false, // If the address object is present then it must have a \'house\' key\n                    validators: {\n                        bannedHouses: "Garage full of tools"\n                    }\n                },\n                street: {\n                    type: ["string", "null"],\n                    transforms: "addThe"\n                },\n                city: {\n                    type: "string",\n                    required: true\n                },\n                country: {\n                    type: "string",\n                    required: true,\n                    validators: {\n                        enum: ["GB", "US", "AU"]\n                    }\n                }\n            }\n        },\n        dateOfBirth: {\n            type: "date", // value must be a date object\n            required: true,\n            transforms: "toDate" // cast date string into date\n        }\n        \n    }\n});\n```\n\n\n### Validate objects\n```js\nvar customRslt1 = customValidator({\n    name: "Hannibal Smith",\n    age: 53,\n    phone: "+01 2233445566",\n    gender: "male",\n    address: {\n        street: "Underground",\n        city: "Los Angeles",\n        country: "US"\n    },\n    dateOfBirth: "Fri Oct 16 1955 12:15:35 GMT+0100 (BST)"\n});\n\n// Boolean if the object is valid\nassert(customRslt1.isValid);\n\n// Show all errors from validation\nassert.equal(customRslt1.error, null);\n\n// Output valid data\nassert.equal(customRslt1.data.name, "Hannibal Smith");\n\nvar customRslt2 = customValidator({\n    name: "B A Baracus",\n    age: 38,\n    phone: "foobar",\n    gender: "male",\n    address: {\n        city: "Los Angeles",\n        country: "US"\n    }\n});\n\n// Boolean if the object is valid\nassert(!customRslt2.isValid);\n\n// Show all errors from validation\nassert.equal(customRslt2.error.phone.regex, "string does not match regex");\n\n// Output valid data\nassert.equal(customRslt2.data.name, "B A Baracus");\n```\n\n\n## Pro tips\nSchemas are objects which can be easily composed together.\n\nOne off custom validators and transforms can be added directly to a schema definition.\n\n```js\nhannibal.create({\n    type: "string",\n    transforms: function (value) {\n        return "I\'m transforming " + value + " with my additions";\n    },\n    validators: {\n        myCustomValidator: function (value) {\n            if (value.match(/plane/)) {\n                throw new Error("Ain\'t getting on no damn plane fool")\n            }\n        }\n    }\n});\n```\n\nTransforms can accept an additional argument of an object. This is provided as a second argument to the validator. This is useful if your transform depends on other objects such as a user.\n\n```js\nvar Hannibal = require("hannibal");\nvar proHannibal = new Hannibal();\nvar proValidator = proHannibal.create({\n    type: "number",\n    // Transform which takes the value and arguments\n    transforms: function (value, args) {\n        return value * args.multiplier\n    }\n});\n// Define validator with second argument to pass to all transforms\nvar proRslt = proValidator(2, {multiplier: 5})\nassert.equal(proRslt.isValid, true);\nassert.equal(proRslt.data, 10);\n```\n\n\n## Test\nRun tests using `npm test`.\n',
+17 silly publish   readmeFilename: 'README.md',
+17 silly publish   gitHead: '5ec09f335a6ca14439a1bf8246acaa02ccf4e8ae',
+17 silly publish   _id: 'hannibal@0.2.9',
+17 silly publish   _shasum: '27cd5f7af7f7615099c062db684739e8d6c906e1',
+17 silly publish   _from: '.' }
+18 verbose getPublishConfig undefined
+19 silly mapToRegistry name hannibal
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry https://registry.npmjs.org/
+22 silly mapToRegistry uri https://registry.npmjs.org/hannibal
+23 verbose publish registryBase https://registry.npmjs.org/
+24 silly publish uploading /Users/Oli/.npm/hannibal/0.2.9/package.tgz
+25 verbose request uri https://registry.npmjs.org/hannibal
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 2:58:07 PM
+28 verbose request using bearer token for auth
+29 verbose request id 866dc9dc0935b123
+30 http request PUT https://registry.npmjs.org/hannibal
+31 http 403 https://registry.npmjs.org/hannibal
+32 verbose headers { 'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=60',
+32 verbose headers   'content-length': '95',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Wed, 18 Nov 2015 14:58:09 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-lcy1123-LCY',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1447858687.581185,VS0,VE1464' }
+33 verbose request invalidating /Users/Oli/.npm/registry.npmjs.org/hannibal on PUT
+34 error publish Failed PUT 403
+35 verbose stack Error: "You cannot publish over the previously published version 0.2.9." : hannibal
+35 verbose stack     at makeError (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+35 verbose stack     at CachingRegistryClient.<anonymous> (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+35 verbose stack     at Request._callback (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+35 verbose stack     at Request.self.callback (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/request/request.js:198:22)
+35 verbose stack     at emitTwo (events.js:87:13)
+35 verbose stack     at Request.emit (events.js:172:7)
+35 verbose stack     at Request.<anonymous> (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/request/request.js:1063:14)
+35 verbose stack     at emitOne (events.js:82:20)
+35 verbose stack     at Request.emit (events.js:169:7)
+35 verbose stack     at IncomingMessage.<anonymous> (/Users/Oli/.nvm/versions/node/v4.2.1/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+36 verbose statusCode 403
+37 verbose pkgid hannibal
+38 verbose cwd /Users/Oli/dev/pearlshare/apps/ps-modules/hannibal
+39 error Darwin 15.0.0
+40 error argv "/Users/Oli/.nvm/versions/node/v4.2.1/bin/node" "/Users/Oli/.nvm/versions/node/v4.2.1/bin/npm" "publish"
+41 error node v4.2.1
+42 error npm  v2.14.7
+43 error code E403
+44 error "You cannot publish over the previously published version 0.2.9." : hannibal
+45 error If you need help, you may report this error at:
+45 error     <https://github.com/npm/npm/issues>
+46 verbose exit [ 1, true ]
