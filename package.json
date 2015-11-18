@@ -3,11 +3,12 @@
   "version": "0.2.9",
   "description": "Validate JSON",
   "repository": {
-    "git": "https://github.com/oliverbrooks/hannibal.git"
+    "type": "git",
+    "git": "https://github.com/pearlshare/hannibal.git"
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test/index.js"
   },
   "keywords": [
     "JSON",
@@ -15,11 +16,13 @@
     "errors"
   ],
   "author": "",
+  "tonicExampleFilename": "examples/tonic.js",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^0.24.0",
     "expect.js": "^0.3.1",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.3.0"
   },
   "dependencies": {
     "lodash": "^3.10.1"

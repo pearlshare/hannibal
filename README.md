@@ -1,8 +1,8 @@
 # Hannibal
 
-![circleci](https://circleci.com/gh/oliverbrooks/hannibal.png?style=shield)
-![Dependency Status](https://david-dm.org/oliverbrooks/hannibal.svg)
-![Dev Dependency Status](https://david-dm.org/oliverbrooks/hannibal/dev-status.svg)
+![circleci](https://circleci.com/gh/pearlshare/hannibal.png?style=shield)
+![Dependency Status](https://david-dm.org/pearlshare/hannibal.svg)
+![Dev Dependency Status](https://david-dm.org/pearlshare/hannibal/dev-status.svg)
 
 ![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
 
@@ -32,7 +32,7 @@ var Hannibal = require("hannibal");
 var hannibal = new Hannibal();
 
 // Create a validator by adding a schema
-var validator = hannibal.create({
+var basicValidator = hannibal.create({
     type: "object",
     schema: {
         name: {
@@ -56,23 +56,42 @@ var validator = hannibal.create({
 });
 
 // Check a valid user
-validator({
+var basicRslt1 = basicValidator({
     name: "John Smith",
     age: 53,
     address: {
         street: "The underground",
         city: "Los Angeles"
     }
-}) // {isValid: true, data: {name: "John Smith", ...}}
+})
+assert(basicRslt1.isValid);
 
 // Check an invalid user
-validator({
+var basicRslt2 = basicValidator({
     name: "Templeton Peck",
-    age: "38",
+    age: "foo",
     address: {
         city: "Los Angeles"
     }
-}) // {isValid: false, error: {age: {type: "is not a string", address: {street: {required: "is not provided"}}}}, data: {name: "Templeton Peck"}}
+});
+
+assert.deepEqual(basicRslt2, {
+  isValid: false,
+  originalData: {
+    name: 'Templeton Peck',
+    age: 'foo',
+    address: { city: 'Los Angeles' }
+  },
+  data: {
+    name: 'Templeton Peck',
+    address: { city: 'Los Angeles' }
+  },
+  error: {
+    age: {
+      type: '\'string\' was not in allowed types: number' 
+    }
+  }
+});
 ```
 
 
@@ -187,7 +206,7 @@ var hannibal = new Hannibal({
 ### Define schema
 ```js
 // Create a validator from the customised Hannibal instance
-var validator = hannibal.create({
+var customValidator = hannibal.create({
     type: "object",
     schema: {
         name: {
@@ -200,7 +219,7 @@ var validator = hannibal.create({
         },
         age: {
             type: ["number", "null"], // value must be an number or null
-            transforms: "toInt", // before validation perform a built in function
+            transforms: "toInteger", // before validation perform a built in function
             validators: {
                 min: 0, // min value
                 max: 120 // max value
@@ -209,7 +228,7 @@ var validator = hannibal.create({
         phone: {
             type: "string",
             validators: {
-                regex: "\+\d{2,3}\s\d{10,12}$" // Check regex match
+                regex: "^\\+\\d{2,3}\\s\\d{10,12}$" // Check regex match
             }
         },
         gender: {
@@ -223,7 +242,7 @@ var validator = hannibal.create({
             schema: {
                 house: {
                     type: "string",
-                    required: true // If the address object is present then it must have a 'house' key
+                    required: false, // If the address object is present then it must have a 'house' key
                     validators: {
                         bannedHouses: "Garage full of tools"
                     }
@@ -238,7 +257,6 @@ var validator = hannibal.create({
                 },
                 country: {
                     type: "string",
-                    transforms: "toUppercase",
                     required: true,
                     validators: {
                         enum: ["GB", "US", "AU"]
@@ -259,7 +277,7 @@ var validator = hannibal.create({
 
 ### Validate objects
 ```js
-var plan1 = validator({
+var customRslt1 = customValidator({
     name: "Hannibal Smith",
     age: 53,
     phone: "+01 2233445566",
@@ -273,18 +291,18 @@ var plan1 = validator({
 });
 
 // Boolean if the object is valid
-plan1.isValid // true
+assert(customRslt1.isValid);
 
 // Show all errors from validation
-plan1.error // null
+assert.equal(customRslt1.error, null);
 
 // Output valid data
-plan1.data // {name: "Hannibal Smith", ...}
+assert.equal(customRslt1.data.name, "Hannibal Smith");
 
-var plan2 = validator({
+var customRslt2 = customValidator({
     name: "B A Baracus",
-    age: "38",
-    phone: "+01 6665554443",
+    age: 38,
+    phone: "foobar",
     gender: "male",
     address: {
         city: "Los Angeles",
@@ -293,13 +311,13 @@ var plan2 = validator({
 });
 
 // Boolean if the object is valid
-plan2.isValid // false
+assert(!customRslt2.isValid);
 
 // Show all errors from validation
-plan2.error // {address: {street: {required: "key was not provided"}},dateOfBirth: {required: "key was not provided"}}
+assert.equal(customRslt2.error.phone.regex, "string does not match regex");
 
 // Output valid data
-plan2.data // {name: "B A Baracus", age: 38, ...}
+assert.equal(customRslt2.data.name, "B A Baracus");
 ```
 
 
@@ -309,7 +327,7 @@ Schemas are objects which can be easily composed together.
 One off custom validators and transforms can be added directly to a schema definition.
 
 ```js
-{
+hannibal.create({
     type: "string",
     transforms: function (value) {
         return "I'm transforming " + value + " with my additions";
@@ -321,15 +339,15 @@ One off custom validators and transforms can be added directly to a schema defin
             }
         }
     }
-}
+});
 ```
 
 Transforms can accept an additional argument of an object. This is provided as a second argument to the validator. This is useful if your transform depends on other objects such as a user.
 
 ```js
 var Hannibal = require("hannibal");
-var hannibal = new Hannibal();
-var validator = hannibal.create({
+var proHannibal = new Hannibal();
+var proValidator = proHannibal.create({
     type: "number",
     // Transform which takes the value and arguments
     transforms: function (value, args) {
@@ -337,7 +355,9 @@ var validator = hannibal.create({
     }
 });
 // Define validator with second argument to pass to all transforms
-validator(2, {multiplier: 5}) // {isValid: true, data: 10, ...}
+var proRslt = proValidator(2, {multiplier: 5})
+assert.equal(proRslt.isValid, true);
+assert.equal(proRslt.data, 10);
 ```
 
 
