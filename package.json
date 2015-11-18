@@ -16,6 +16,7 @@
     "errors"
   ],
   "author": "",
+  "tonicExampleFilename": "examples/tonic.js",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^0.24.0",
