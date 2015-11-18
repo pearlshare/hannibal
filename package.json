@@ -3,7 +3,8 @@
   "version": "0.2.9",
   "description": "Validate JSON",
   "repository": {
-    "git": "https://github.com/oliverbrooks/hannibal.git"
+    "type": "git",
+    "git": "https://github.com/pearlshare/hannibal.git"
   },
   "main": "index.js",
   "scripts": {
@@ -15,6 +16,7 @@
     "errors"
   ],
   "author": "",
+  "tonicExampleFilename": "examples/tonic.js",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^0.24.0",
