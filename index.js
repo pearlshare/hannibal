@@ -1,11 +1,12 @@
-var assign   = require("lodash.assign");
-var Hannibal = require("./lib/index");
-var basic    = require("./lib/transforms/basic");
+var assign          = require("lodash.assign");
+var Hannibal        = require("./lib/index");
+var basicTransforms = require("./lib/transforms/basic");
+var basicValidators = require("./lib/validators/basic");
 
 function HannibalWithTransforms(opts) {
-  opts = opts || {};
-  opts.transforms = assign({}, opts.transforms, basic);
-  return Hannibal.call(this, opts);
+  Hannibal.call(this, opts);
+  this.addTransforms(basicTransforms);
+  this.addValidators(basicValidators);
 }
 
 HannibalWithTransforms.prototype = Object.create(Hannibal.prototype);
