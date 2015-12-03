@@ -160,8 +160,9 @@ Packaged transforms include:
  * toString - convert numbers into strings
  * toInteger - convert strings into integers
  * toFloat  - convert strings into floats
- * toDate  - convert strings into dates
  * toArray  - wrap non arrays into an array
+ * toDate  - convert strings into dates
+ * toBoolean - converts `>0`/`"true"`/`"on"`/`"yes"` -> `true` and `<1`/`"false"`/`"off"`/`"no"` -> `false`
 
 See `lib/transforms.js` for the full list.
 
