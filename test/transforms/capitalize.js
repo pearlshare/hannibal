@@ -2,9 +2,8 @@ var expect = require("expect.js");
 var Hannibal = require("../../index");
 
 describe("transforms", function () {
-  var hannibal = new Hannibal({
-    transforms: require("../../lib/transforms/string")
-  });
+  var hannibal = new Hannibal();
+  hannibal.addTransforms(require("../../lib/transforms/string"));
 
   describe("capitalize", function () {
     var testSchema = hannibal.create({
