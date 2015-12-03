@@ -3,7 +3,7 @@ var Hannibal = require("../../index");
 
 describe("transforms", function () {
   var hannibal = new Hannibal();
-  hannibal.addTransforms(require("../../lib/transforms/array"));
+  hannibal.addTransforms(require("../../transforms/array"));
 
   describe("compact", function () {
     var testSchema = hannibal.create({

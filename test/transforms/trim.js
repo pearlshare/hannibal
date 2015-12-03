@@ -3,7 +3,7 @@ var Hannibal = require("../../index");
 
 describe("transforms", function () {
   var hannibal = new Hannibal({
-    transforms: require("../../lib/transforms/string")
+    transforms: require("../../transforms/string")
   });
 
   describe("trim", function () {

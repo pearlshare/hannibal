@@ -3,7 +3,7 @@ var Hannibal = require("../../index");
 
 describe("transforms", function () {
   var hannibal = new Hannibal();
-  hannibal.addTransforms(require("../../lib/transforms/string"));
+  hannibal.addTransforms(require("../../transforms/string"));
 
   describe("toUpperCase", function () {
     var testSchema = hannibal.create({

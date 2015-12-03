@@ -1,7 +1,7 @@
 var assign          = require("lodash.assign");
 var Hannibal        = require("./lib/index");
-var basicTransforms = require("./lib/transforms/basic");
-var basicValidators = require("./lib/validators/basic");
+var basicTransforms = require("./transforms/basic");
+var basicValidators = require("./validators/basic");
 
 function HannibalWithTransforms(opts) {
   Hannibal.call(this, opts);
