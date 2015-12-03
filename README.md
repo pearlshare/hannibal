@@ -164,7 +164,7 @@ Packaged transforms include:
  * toDate  - convert strings into dates
  * toBoolean - converts `>0`/`"true"`/`"on"`/`"yes"` -> `true` and `<1`/`"false"`/`"off"`/`"no"` -> `false`
 
-See [/lib/transforms](/lib/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite_mode)
+See [/transforms](/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite-mode)
 
 Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema. 
 
