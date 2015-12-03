@@ -25,6 +25,25 @@
     "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.3.0"
   },
   "dependencies": {
-    "lodash": "^3.10.1"
+    "lodash.assign": "^3.2.0",
+    "lodash.capitalize": "^3.0.0",
+    "lodash.clone": "^3.0.3",
+    "lodash.compact": "^3.0.0",
+    "lodash.contains": "^2.4.3",
+    "lodash.deburr": "^3.0.2",
+    "lodash.escape": "^3.0.0",
+    "lodash.forin": "^3.0.2",
+    "lodash.isarray": "^3.0.4",
+    "lodash.isboolean": "^3.0.1",
+    "lodash.isdate": "^3.0.1",
+    "lodash.isnull": "^3.0.0",
+    "lodash.isnumber": "^3.0.1",
+    "lodash.isobject": "^3.0.2",
+    "lodash.isstring": "^3.0.1",
+    "lodash.kebabcase": "^3.0.1",
+    "lodash.keys": "^3.1.2",
+    "lodash.trim": "^3.0.1",
+    "lodash.uniq": "^3.2.2",
+    "lodash.words": "^3.0.2"
   }
 }
