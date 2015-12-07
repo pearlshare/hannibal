@@ -160,10 +160,11 @@ Packaged transforms include:
  * toString - convert numbers into strings
  * toInteger - convert strings into integers
  * toFloat  - convert strings into floats
- * toDate  - convert strings into dates
  * toArray  - wrap non arrays into an array
+ * toDate  - convert strings into dates
+ * toBoolean - converts `>0`/`"true"`/`"on"`/`"yes"` -> `true` and `<1`/`"false"`/`"off"`/`"no"` -> `false`
 
-See `lib/transforms.js` for the full list.
+See [/transforms](/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite-mode)
 
 Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema. 
 
@@ -358,6 +359,18 @@ var proValidator = proHannibal.create({
 var proRslt = proValidator(2, {multiplier: 5})
 assert.equal(proRslt.isValid, true);
 assert.equal(proRslt.data, 10);
+```
+
+## Lite mode
+There is also a lite version where you can choose which validators and transforms you can include, the following is the same as the normal hannibal.
+
+```js
+var Hannibal = require("hannibal/lite");
+var liteHannibal = new Hannibal();
+
+// Add in basic validators
+liteHannibal.addTransforms(require("hannibal/transforms/basic"));
+liteHannibal.addValidators(require("hannibal/validators/basic"));
 ```
 
 

@@ -1,6 +1,8 @@
 var expect = require("expect.js");
 var Hannibal = require("../../index");
-var hannibal = new Hannibal();
+var hannibal = new Hannibal({
+  transforms: require("../../transforms/string")
+});
 
 var testSchema = hannibal.create({
   type: "object",

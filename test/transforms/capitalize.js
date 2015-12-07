@@ -3,6 +3,7 @@ var Hannibal = require("../../index");
 
 describe("transforms", function () {
   var hannibal = new Hannibal();
+  hannibal.addTransforms(require("../../transforms/string"));
 
   describe("capitalize", function () {
     var testSchema = hannibal.create({
