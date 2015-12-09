@@ -106,7 +106,7 @@ describe("transforms", function () {
       expect(output2.isValid).to.be(false);
     });
 
-    /**
+    /*
      * Number tests
      */
     it("should turn 1 into a true", function () {
@@ -118,7 +118,7 @@ describe("transforms", function () {
     });
 
     it("should turn '1' into a true", function () {
-      var output = testSchema('1');
+      var output = testSchema("1");
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.be.a("boolean");
@@ -134,7 +134,7 @@ describe("transforms", function () {
     });
 
     it("should turn '99' into a true", function () {
-      var output = testSchema('99');
+      var output = testSchema("99");
 
       expect(output.isValid).to.be(true);
       expect(output.data).to.be.a("boolean");
@@ -173,7 +173,7 @@ describe("transforms", function () {
       expect(output.data).to.eql(false);
     });
 
-    /**
+    /*
      * Boolean tests
      */
     it("should turn true into a true", function () {

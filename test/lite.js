@@ -27,8 +27,8 @@ describe("lite version", function () {
       it(method, function () {
         var testSchema = hannibal.create({transforms: method});
         expect(function() {
-          testSchema({})
-        }).to.throwException("no transforms registered called: "+method);
+          testSchema({});
+        }).to.throwException("no transforms registered called: " + method);
       });
     });
 
