@@ -1,5 +1,6 @@
 require("./default");
 require("./examples");
+require("./errors");
 require("./transforms");
 require("./types");
 require("./validator");
