@@ -1,4 +1,3 @@
-var assign          = require("lodash.assign");
 var Hannibal        = require("./lib/index");
 var basicTransforms = require("./transforms/basic");
 var basicValidators = require("./validators/basic");

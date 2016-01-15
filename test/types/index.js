@@ -1,5 +1,6 @@
 require("./array");
 require("./date");
+require("./function");
 require("./mixed");
 require("./null");
 require("./number");
