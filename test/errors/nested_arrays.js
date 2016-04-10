@@ -102,7 +102,7 @@ describe("errors", function () {
       var result = testSchema(user);
       expect(result.error).to.be.a("object");
       expect(result.error.friends).to.be.an("array");
-      expect(result.error.friends[0]).to.not.have.keys("name", "contacts");
+      expect(result.error.friends[0]).to.be(undefined);
       expect(result.error.friends[1]).to.have.keys("name", "contacts");
       expect(result.error.friends[1].name).to.have.keys("required");
       expect(result.error.friends[1].name.required).to.be.a("string").and.match(/provided/);

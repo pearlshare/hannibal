@@ -13,6 +13,10 @@ var testSchema = hannibal.create({
     },
     contacts: {
       type: "array",
+      required: true,
+      validators: {
+        min: 1
+      },
       schema: {
         type: "object",
         schema: {
@@ -95,6 +99,25 @@ describe("errors", function () {
       expect(result.error.contacts[0]).to.be(undefined);
       expect(result.error.contacts[1]).to.be.an("object").and.to.have.keys("type");
       expect(result.error.contacts[1].type).to.have.keys("enum");
+    });
+
+    it("should be error if no array", function () {
+      var user = {
+        name: "Fred"
+      };
+      var result = testSchema(user);
+      expect(result.error).to.be.a("object");
+      expect(result.error.contacts).to.be.an("object").and.have.keys("required");
+    });
+
+    it("should be error if not enough items in the array", function () {
+      var user = {
+        name: "Fred",
+        contacts: []
+      };
+      var result = testSchema(user);
+      expect(result.error).to.be.a("object");
+      expect(result.error.contacts).to.be.an("object").and.have.keys("min");
     });
   });
 });
