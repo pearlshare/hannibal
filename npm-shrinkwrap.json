@@ -1,6 +1,6 @@
 {
   "name": "hannibal",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "dependencies": {
     "ansi-regex": {
       "version": "2.0.0",
