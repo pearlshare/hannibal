@@ -34,19 +34,17 @@ describe("transforms", function () {
       expect(output.data).to.eql(2);
     });
 
-    it("should turn an array into a NaN", function () {
+    it("should fail if an array if passed", function () {
       var output = testSchema(["Hannibal", "Face"]);
 
-      expect(output.isValid).to.be(true);
-      expect(output.data).to.be.a("number");
+      expect(output.isValid).to.be(false);
       expect(isNaN(output.data)).to.be(true);
     });
 
-    it("should turn an object into a number", function () {
+    it("should fail if an object is passed", function () {
       var output = testSchema({name: "Hannibal"});
 
-      expect(output.isValid).to.be(true);
-      expect(output.data).to.be.a("number");
+      expect(output.isValid).to.be(false);
       expect(isNaN(output.data)).to.be(true);
     });
   });

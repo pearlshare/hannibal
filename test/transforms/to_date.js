@@ -18,5 +18,13 @@ describe("transforms", function () {
       expect(output.data).to.be.a(Date);
       expect(output.data).to.eql(new Date(date));
     });
+
+    it("should not transform invalid date", function () {
+      var date = (new Date("foo")).toString();
+      var output = testSchema(date);
+
+      expect(output.isValid).to.be(false);
+      expect(isNaN(output.data)).to.be(true);
+    });
   });
 });
