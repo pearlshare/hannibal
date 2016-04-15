@@ -17,14 +17,22 @@ module.exports = {
   },
   toInteger: function (value) {
     if (notNullOrUndefined(value)) {
-      return parseInt(value, 10);
+      var ret = parseInt(value, 10);
+      if(Number.isNaN(ret)) {
+        return value;
+      }
+      return ret;
     } else {
       return value;
     }
   },
   toFloat: function (value) {
     if (notNullOrUndefined(value)) {
-      return parseFloat(value);
+      var ret = parseFloat(value);
+      if(Number.isNaN(ret)) {
+        return value;
+      }
+      return ret;
     } else {
       return value;
     }
@@ -38,7 +46,11 @@ module.exports = {
   },
   toDate: function (value) {
     if (notNullOrUndefined(value)) {
-      return new Date(value);
+      var ret = new Date(value);
+      if(Number.isNaN(ret.getTime())) {
+        return value;
+      }
+      return ret;
     } else {
       return value;
     }
