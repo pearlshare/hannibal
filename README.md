@@ -88,7 +88,7 @@ assert.deepEqual(basicRslt2, {
   },
   error: {
     age: {
-      type: '\'string\' was not in allowed types: number' 
+      type: '\'string\' was not in allowed types: number'
     }
   }
 });
@@ -166,7 +166,7 @@ Packaged transforms include:
 
 See [/transforms](/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite-mode)
 
-Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema. 
+Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema.
 
 
 ## Advanced usage
@@ -270,7 +270,7 @@ var customValidator = hannibal.create({
             required: true,
             transforms: "toDate" // cast date string into date
         }
-        
+
     }
 });
 ```
