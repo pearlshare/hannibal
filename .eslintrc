@@ -9,7 +9,6 @@
     "it": false,
     "after": true
   },
-  // http://eslint.org/docs/rules/
   "rules": {
     "camelcase": 1,
     "new-cap": 0,
@@ -20,8 +19,8 @@
     "no-underscore-dangle": 0,
     "valid-jsdoc": [1, {
       "prefer": {
-          "return": "returns"
+        "return": "returns"
       }
-  }]
+    }]
   }
 }
