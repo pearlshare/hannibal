@@ -23,7 +23,7 @@ describe("validator(array)", function () {
     });
   });
 
-  describe("nested array", function () {
+  describe("nested array of strings", function () {
     var testSchema = hannibal.create({
       type: "array",
       schema: {
@@ -39,6 +39,29 @@ describe("validator(array)", function () {
 
     it("should fail to validate if not a valid nested array", function () {
       var output = testSchema([1]);
+
+      expect(output.isValid).to.be(false);
+      expect(output.error).to.be.a("array").and.to.have.length(1);
+      expect(output.error[0]).to.be.a("object").and.to.have.keys("type");
+    });
+  });
+
+  describe("nested array of numbers", function () {
+    var testSchema = hannibal.create({
+      type: "array",
+      schema: {
+        type: "number"
+      }
+    });
+
+    it("should validate an array", function () {
+      var output = testSchema([1]);
+
+      expect(output.isValid).to.be(true);
+    });
+
+    it("should fail to validate if not a valid nested array", function () {
+      var output = testSchema(["1"]);
 
       expect(output.isValid).to.be(false);
       expect(output.error).to.be.a("array").and.to.have.length(1);
