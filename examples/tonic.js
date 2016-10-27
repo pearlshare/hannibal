@@ -9,7 +9,8 @@ var validator = hannibal.create({
       type: "string"
     },
     age: {
-      type: "number"
+      type: "number",
+      transforms: "toInteger" // convert "55" into 55
     },
     address: {
       type: "object",

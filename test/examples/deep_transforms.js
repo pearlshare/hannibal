@@ -26,7 +26,7 @@ var testSchema = hannibal.create({
     address: {
       type: "object",
       required: true,
-      transforms: collapseObject,
+      reducers: collapseObject,
       schema: {
         street: {
           type: "string"
@@ -36,17 +36,17 @@ var testSchema = hannibal.create({
         },
         otherDetails: {
           type: "object",
-          transforms: collapseObject
+          reducers: collapseObject
         }
       }
     },
     contacts: {
       type: "array",
       required: true,
-      transforms: collapseArray,
+      reducers: collapseArray,
       schema: {
         type: "object",
-        transforms: collapseObject,
+        reducers: collapseObject,
         schema: {
           value: {
             type: "string"
@@ -56,7 +56,7 @@ var testSchema = hannibal.create({
           },
           alternateContacts: {
             type: "array",
-            transforms: collapseArray
+            reducers: collapseArray
           }
         }
       }

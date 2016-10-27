@@ -6,22 +6,26 @@
 
 ![love it when a plan comes together](https://images.rapgenius.com/530583e79e4fc7f75855995d511e185c.400x294x1.jpg)
 
-
 ## What's it for?
-Checking a value against a set of rules (schema or plan). Useful for defining APIs and interfaces. We primarily use it to check and handle data coming into and out from our and other APIs as well as to create a lightweight ORM.
 
+Coerce and validate objects against a set of rules (schema or plan). This is useful for defining APIs and model interfaces.
+
+At Pearlshare we use it for validating API input/output, we've built a lightweight ORM and even type checking arguments of functions.
 
 ## Objectives
-Validate an object, array or primitive and provide clear error reporting.
 
-Easily extensible functionality using simple JavaScript.
+Coerce and validate an object in one pass
+
+Provide clear error reporting which is easy to consume.
+
+Be extensible using simple JavaScript.
 
 Provide a handy set of common validations such as min/max values, regex and enums to get going quickly but without going overboard.
 
-Be fast and lightweight.
-
+Schemas should be plain JSON objects for easy composition and re-use.
 
 ## Basic usage
+
 Create a validator to check a user object is valid.
 
 ```js
@@ -65,6 +69,14 @@ var basicRslt1 = basicValidator({
     }
 })
 assert(basicRslt1.isValid);
+assert.deepEqual(basicRslt1.data, {
+    name: "John Smith",
+    age: 53,
+    address: {
+        street: "The underground",
+        city: "Los Angeles"
+    }
+});
 
 // Check an invalid user
 var basicRslt2 = basicValidator({
@@ -75,32 +87,40 @@ var basicRslt2 = basicValidator({
     }
 });
 
-assert.deepEqual(basicRslt2, {
-  isValid: false,
-  originalData: {
-    name: 'Templeton Peck',
-    age: 'foo',
-    address: { city: 'Los Angeles' }
-  },
-  data: {
-    name: 'Templeton Peck',
-    address: { city: 'Los Angeles' }
-  },
-  error: {
+assert(!basicRslt2.isValid);
+assert.deepEqual(basicRslt2.error, {
     age: {
-      type: '\'string\' was not in allowed types: number'
+        type: '\'string\' was not in allowed types: number'
     }
-  }
+});
+assert.deepEqual(basicRslt2.data, {
+    name: 'Templeton Peck',
+    address: { city: 'Los Angeles' }
 });
 ```
 
 
-## Schema building
-The schema defines the validation rules.
+## Schema
 
+The schema is a JS or JSON object which defines the validation rules. It can contain nested schemas to perform deep validation into objects.
 
-### Types
-Types represent the primitive types allowed. These are provided as either a string or array of strings.
+The default schema looks like this:
+
+```js
+var schema = {
+    type: "object",
+    required: true,
+    schema: {
+        oneKey: {
+            type: "string"
+        }
+    }
+}
+```
+
+### schema.type
+
+The type key of the schema represent the type of primitive allowed in the object being validated. These are provided as either a string or array of strings.
 
 Available types:
 
@@ -113,13 +133,85 @@ Available types:
  * object
  * null
 
+Usage:
 
-### Required
-When set to `true` the required statement will error if the given key is not provided in the input object. Note this does not check the value, purely the presence of the key.
+```js
+var schema = {
+    type: "string"
+}
 
+var schema2 = {
+    type: ["string", "null"]
+}
+```
 
-### Validators
-Validators check the value against a set of criteria. Available validators are:
+### schema.required
+
+The `required` key of the schema will invalidate the object being tested if the key is missing. Note this does not check the value, purely the presence of the key.
+
+Usage:
+
+```js
+var schema = {
+    type: "string",
+    required: true
+}
+```
+
+### schema.default
+
+The `default` key of the schema will set a value in the object being validated if the key is missing or the value is `undefined`. The value of the `default` key can be the default value itself or a function returning a value.
+
+Usage:
+
+```js
+var schema = {
+    type: "boolean",
+    default: false
+}
+
+var schema2 = {
+    type: "date",
+    default: function () {
+        return new Date();
+    }
+}
+```
+
+### schema.transforms
+
+The `transforms` key of the schema provides a set of transform functions to run on the object being validated. These are provided as a single or array of strings or functions. A transform can convert a coerce or cast a value into a type. For example turning `"false"` into `false` or `"string"` into `["string"]`. Transforms are performed before validation.
+
+Packaged transforms include:
+
+ * toString - convert numbers into strings
+ * toInteger - convert strings into integers
+ * toFloat  - convert strings into floats
+ * toArray  - wrap non arrays into an array
+ * toDate  - convert strings into dates
+ * toBoolean - converts `>0`/`"true"`/`"on"`/`"yes"` -> `true` and `<1`/`"false"`/`"off"`/`"no"` -> `false`
+
+See [/transforms](/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite-mode)
+
+Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema.
+
+Usage:
+
+```js
+var schema = {
+    type: "string",
+    transforms: "toString"
+}
+
+var schema2 = {
+    type: "string",
+    transforms: ["toString", function (value) { return value.toLowerCase()}]
+}
+```
+
+### schema.validators
+
+The `validators` key of the schema provides an object containing validation criteria. Available validators are:
 
 String:
 
@@ -151,228 +243,52 @@ Custom validators can be given via the `custom` key or registered with `hannibal
 
 Custom validators should throw an instance of `Error` with a message.
 
-
-### Transforms
-Transforms run before validation and can be used to convert or cast a value. These are provided as a single or array of strings or functions.
-
-Packaged transforms include:
-
- * toString - convert numbers into strings
- * toInteger - convert strings into integers
- * toFloat  - convert strings into floats
- * toArray  - wrap non arrays into an array
- * toDate  - convert strings into dates
- * toBoolean - converts `>0`/`"true"`/`"on"`/`"yes"` -> `true` and `<1`/`"false"`/`"off"`/`"no"` -> `false`
-
-See [/transforms](/transforms) for the full list. Note `basic` is included by default unless in [lite mode](#lite-mode)
-
-Custom transforms can be registed when creating a Hannibal instance or added in-line via functions in the schema.
-
-
-## Advanced usage
-Hannibal provides basic validation functionality out of the box and also enables easy customisation.
-
-To customise create a new instance passing a customisation object. The customisation object will will add to and override the default set or `transforms` and `validators`.
-
-
-### Customise Hannibal
-```js
-// Load Hannibal
-var Hannibal = require("hannibal");
-
-// Create a Hannibal instance with custom filters and validators registered
-var hannibal = new Hannibal({
-    transforms: {
-        addThe: function (value) {
-            if (typeof value === "string") {
-                return "The " + value;
-            } else {
-                return value;
-            }
-        }
-    },
-    validators: {
-        string: {
-            bannedHouses: function (value, attr) {
-                if (value === attr) {
-                    throw new Error("The A-Team can't stay in a: " + value);
-                }
-            }
-        }
-    }
-});
-```
-
-
-### Define schema
-```js
-// Create a validator from the customised Hannibal instance
-var customValidator = hannibal.create({
-    type: "object",
-    schema: {
-        name: {
-            type: "string", // value must be a string if present
-            required: true, // If the key is missing will raise error
-            validators: {
-                min: 2, // Minimum value string length
-                max: 50 // Maximum value string length
-            }
-        },
-        age: {
-            type: ["number", "null"], // value must be an number or null
-            transforms: "toInteger", // before validation perform a built in function
-            validators: {
-                min: 0, // min value
-                max: 120 // max value
-            }
-        },
-        phone: {
-            type: "string",
-            validators: {
-                regex: "^\\+\\d{2,3}\\s\\d{10,12}$" // Check regex match
-            }
-        },
-        gender: {
-            type: "string",
-            validators: {
-                enum: ["male", "female"] // value must be one of male/female
-            }
-        },
-        address: {
-            type: ["object", "null"], // allow an object or null
-            schema: {
-                house: {
-                    type: "string",
-                    required: false, // If the address object is present then it must have a 'house' key
-                    validators: {
-                        bannedHouses: "Garage full of tools"
-                    }
-                },
-                street: {
-                    type: ["string", "null"],
-                    transforms: "addThe"
-                },
-                city: {
-                    type: "string",
-                    required: true
-                },
-                country: {
-                    type: "string",
-                    required: true,
-                    validators: {
-                        enum: ["GB", "US", "AU"]
-                    }
-                }
-            }
-        },
-        dateOfBirth: {
-            type: "date", // value must be a date object
-            required: true,
-            transforms: "toDate" // cast date string into date
-        }
-
-    }
-});
-```
-
-
-### Validate objects
-```js
-var customRslt1 = customValidator({
-    name: "Hannibal Smith",
-    age: 53,
-    phone: "+01 2233445566",
-    gender: "male",
-    address: {
-        street: "Underground",
-        city: "Los Angeles",
-        country: "US"
-    },
-    dateOfBirth: "Fri Oct 16 1955 12:15:35 GMT+0100 (BST)"
-});
-
-// Boolean if the object is valid
-assert(customRslt1.isValid);
-
-// Show all errors from validation
-assert.equal(customRslt1.error, null);
-
-// Output valid data
-assert.equal(customRslt1.data.name, "Hannibal Smith");
-
-var customRslt2 = customValidator({
-    name: "B A Baracus",
-    age: 38,
-    phone: "foobar",
-    gender: "male",
-    address: {
-        city: "Los Angeles",
-        country: "US"
-    }
-});
-
-// Boolean if the object is valid
-assert(!customRslt2.isValid);
-
-// Show all errors from validation
-assert.equal(customRslt2.error.phone.regex, "string does not match regex");
-
-// Output valid data
-assert.equal(customRslt2.data.name, "B A Baracus");
-```
-
-
-## Pro tips
-Schemas are objects which can be easily composed together.
-
-One off custom validators and transforms can be added directly to a schema definition.
+Usage:
 
 ```js
-hannibal.create({
+var schema = {
     type: "string",
-    transforms: function (value) {
-        return "I'm transforming " + value + " with my additions";
-    },
     validators: {
-        myCustomValidator: function (value) {
-            if (value.match(/plane/)) {
-                throw new Error("Ain't getting on no damn plane fool")
-            }
+        regex: "^word$",
+        min: 4,
+        max: 4,
+        enum: ["word"]
+    }
+}
+```
+
+### schema.reducers
+
+The `reducers` key of the schema is similar to `transforms` but are run after validation. This can be useful for compacting down empty objects or arrays.
+
+Usage:
+
+```js
+var schema = {
+    type: "string",
+    reducers: function (value) {
+        if (value.length === 0) {
+            return null;
+        } else {
+            return value;
         }
     }
-});
+}
 ```
 
-Transforms can accept an additional argument of an object. This is provided as a second argument to the validator. This is useful if your transform depends on other objects such as a user.
+## Further reading
 
-```js
-var Hannibal = require("hannibal");
-var proHannibal = new Hannibal();
-var proValidator = proHannibal.create({
-    type: "number",
-    // Transform which takes the value and arguments
-    transforms: function (value, args) {
-        return value * args.multiplier
-    }
-});
-// Define validator with second argument to pass to all transforms
-var proRslt = proValidator(2, {multiplier: 5})
-assert.equal(proRslt.isValid, true);
-assert.equal(proRslt.data, 10);
-```
+See a large [full example](docs/full_example.md) of Hannibal validating a complex user object.
 
-## Lite mode
-There is also a lite version where you can choose which validators and transforms you can include, the following is the same as the normal hannibal.
+Schemas can be composed together for DRY re-usable code. [Docs here](docs/composition.md).
 
-```js
-var Hannibal = require("hannibal/lite");
-var liteHannibal = new Hannibal();
+Schemas can be customised to your requirements. [Docs here](docs/cusomisation.md).
 
-// Add in basic validators
-liteHannibal.addTransforms(require("hannibal/transforms/basic"));
-liteHannibal.addValidators(require("hannibal/validators/basic"));
-```
+For an in depth guide to writing your own transforms see the [guide here](docs/writing_transforms.md).
+
+A lite version of Hannibal is available should you be using in a client where file size is critical. [Docs here](docs/lite.md).
 
 
 ## Test
+
 Run tests using `npm test`.
