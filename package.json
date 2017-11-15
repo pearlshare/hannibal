@@ -1,6 +1,6 @@
 {
   "name": "hannibal",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Validate and modify JavaScript objects",
   "repository": {
     "type": "git",

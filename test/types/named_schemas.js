@@ -7,7 +7,7 @@ describe("validator referenced schemas", function () {
   describe("parsing referenced schemas", function () {
 
     it("should accept a valid object schema", function () {
-      expect(hannibal.create).withArgs({
+      expect(hannibal.create.bind(hannibal)).withArgs({
         id: "main",
         type: "object",
         schema: {
@@ -25,7 +25,7 @@ describe("validator referenced schemas", function () {
     });
 
     it("should accept a valid array schema", function () {
-      expect(hannibal.create).withArgs({
+      expect(hannibal.create.bind(hannibal)).withArgs({
         id: "main",
         type: "object",
         schema: {
@@ -46,7 +46,7 @@ describe("validator referenced schemas", function () {
     });
 
     it("should throw with an invalid object schema", function () {
-      expect(hannibal.create).withArgs({
+      expect(hannibal.create.bind(hannibal)).withArgs({
         id: "main",
         type: "object",
         schema: {
@@ -61,11 +61,13 @@ describe("validator referenced schemas", function () {
             ref: "main"
           }
         }
-      }).to.throwError();
+      }).to.throwError(function (err) {
+        console.log(err)
+      });
     });
 
     it("should throw with an invalid array schema", function () {
-      expect(hannibal.create).withArgs({
+      expect(hannibal.create.bind(hannibal)).withArgs({
         id: "main",
         type: "object",
         schema: {
@@ -87,7 +89,7 @@ describe("validator referenced schemas", function () {
     });
 
     it("should throw with an invalid deeply nested schema", function () {
-      expect(hannibal.create).withArgs({
+      expect(hannibal.create.bind(hannibal)).withArgs({
         id: "main",
         type: "object",
         schema: {

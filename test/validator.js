@@ -5,7 +5,7 @@ describe("create", function () {
   var hannibal = new Hannibal();
 
   it("should take an object", function () {
-    expect(hannibal.create).withArgs({}).to.not.throwError();
+    expect(hannibal.create.bind(hannibal)).withArgs({}).to.not.throwError();
   });
 
   it("should return a function", function () {
@@ -13,7 +13,7 @@ describe("create", function () {
   });
 
   it("should throw an error if not an object", function () {
-    expect(hannibal.create).withArgs("should throw").to.throwError();
+    expect(hannibal.create.bind(hannibal)).withArgs("should throw").to.throwError();
   });
 });
 
