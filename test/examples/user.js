@@ -4,67 +4,67 @@ var hannibal = new Hannibal({
   transforms: require("../../transforms/string")
 });
 
-var testSchema = hannibal.create({
-  type: "object",
-  schema: {
-    id: {
-      type: "number",
-      transforms: "toInteger"
-    },
-    name: {
-      type: "string",
-      required: true
-    },
-    aka: {
-      type: ["string", "null"],
-      required: true
-    },
-    address: {
-      type: "object",
-      required: true,
-      schema: {
-        street: {
-          type: "string",
-          required: true
-        },
-        country: {
-          type: "string",
-          transforms: ["toString", "toUpperCase"],
-          required: true,
-          validators: {
-            enum: ["GB", "US", "AU"]
+describe("examples", function () {
+
+  var testSchema = hannibal.create({
+    type: "object",
+    schema: {
+      id: {
+        type: "number",
+        transforms: "toInteger"
+      },
+      name: {
+        type: "string",
+        required: true
+      },
+      aka: {
+        type: ["string", "null"],
+        required: true
+      },
+      address: {
+        type: "object",
+        required: true,
+        schema: {
+          street: {
+            type: "string",
+            required: true
+          },
+          country: {
+            type: "string",
+            transforms: ["toString", "toUpperCase"],
+            required: true,
+            validators: {
+              enum: ["GB", "US", "AU"]
+            }
           }
         }
-      }
-    },
-    contacts: {
-      type: "array",
-      schema: {
-        type: "object",
+      },
+      contacts: {
+        type: "array",
         schema: {
-          value: {
-            type: "string",
-            transforms: ["toString", "trim"],
-            required: true,
-            validators: {
-              min: 9,
-              max: 13
-            }
-          },
-          type: {
-            type: "string",
-            required: true,
-            validators: {
-              enum: ["phone", "email"]
+          type: "object",
+          schema: {
+            value: {
+              type: "string",
+              transforms: ["toString", "trim"],
+              required: true,
+              validators: {
+                min: 9,
+                max: 13
+              }
+            },
+            type: {
+              type: "string",
+              required: true,
+              validators: {
+                enum: ["phone", "email"]
+              }
             }
           }
         }
       }
     }
-  }
-});
-
-describe("examples", function () {
+  });
 
   describe("valid user", function () {
 

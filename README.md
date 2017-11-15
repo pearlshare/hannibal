@@ -10,19 +10,29 @@
 
 Coerce and validate objects against a set of rules (schema or plan). This is useful for defining APIs and model interfaces.
 
-At Pearlshare we use it for validating API input/output, we've built a lightweight ORM and even type checking arguments of functions.
+Use cases:
+
+* Coerce API input (string to number etc) and validate it. Return errors in a consistent format.
+* Build client side forms from schemas, handle validation client side knowing the API is using the exact same validation rules.
+* Create ORMs ensuring that data is in the right format and valid before being entered in the database.
 
 ## Objectives
 
-Coerce and validate an object in one pass
+Coerce and validate an object in one pass.
 
 Provide clear error reporting which is easy to consume.
 
-Be extensible using simple JavaScript.
+Objects definitions are extensible and composable.
 
 Provide a handy set of common validations such as min/max values, regex and enums to get going quickly but without going overboard.
 
 Schemas should be plain JSON objects for easy composition and re-use.
+
+## Why not use SchemaJS?
+
+If you only need object validation then SchemaJS is probably the solution for you. It's a standard and there are many highly performance optimised solutions out there.
+
+Hannibal was designed for object management.  It not only validates but can also coerce data types and modify object structures whilst only walking an object tree once.
 
 ## Basic usage
 
@@ -120,7 +130,7 @@ var schema = {
 
 ### schema.type
 
-The type key of the schema represent the type of primitive allowed in the object being validated. These are provided as either a string or array of strings.
+The type key of the schema represent the type of primitive allowed as a value. These are provided as either a string or array of strings.
 
 Available types:
 
@@ -136,10 +146,12 @@ Available types:
 Usage:
 
 ```js
+// valid if value is a string
 var schema = {
     type: "string"
 }
 
+// valid if value is either a string or null
 var schema2 = {
     type: ["string", "null"]
 }
@@ -147,7 +159,7 @@ var schema2 = {
 
 ### schema.required
 
-The `required` key of the schema will invalidate the object being tested if the key is missing. Note this does not check the value, purely the presence of the key.
+The `required` key of the schema means a value is required to be valid. A value can be anything including null, undefined and 0. Note that `required` does not check the value type, purely the presence of a value.
 
 Usage:
 
@@ -174,6 +186,33 @@ var schema2 = {
     type: "date",
     default: function () {
         return new Date();
+    }
+}
+```
+
+### schema.id
+
+The `id` key of the schema will allow the schema to be referenced elsewhere in the schema using the `ref` key. This is useful for recursive schemas or schema re-use.
+
+Usage:
+
+```js
+var schema = {
+    type: "object",
+    id: "contact",
+    schema: {
+        name: {
+            type: "string"
+        },
+        phone: {
+            type: "string"
+        },
+        contacts: {
+            type: "array",
+            schema: {
+                ref: "contact"
+            }
+        }
     }
 }
 ```

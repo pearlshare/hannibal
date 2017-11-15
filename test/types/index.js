@@ -2,6 +2,7 @@ require("./array");
 require("./date");
 require("./function");
 require("./mixed");
+require("./named_schemas");
 require("./null");
 require("./number");
 require("./object");
