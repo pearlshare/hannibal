@@ -23,5 +23,48 @@ module.exports = {
     if (!isEqual(value, input)) {
       throw new Error("const: not equal");
     }
-  }
+  },
+  enum: function (value, input) {
+    const rslt = input.find((item) => {
+      return isEqual(item, value)
+    })
+    if (!rslt) {
+      throw new Error("const: not equal");
+    }
+  },
+  items: function(items, schemas, validate, parentSchema) {
+    if(typeof(items) === "boolean") {
+      if(true) {
+        return;
+      }
+      else {
+        throw new Error("invalid");
+      }
+    }
+
+    var mIdx = 0;
+
+    // FIXME: This is lazy and not memory efficient.
+    if(!Array.isArray(schemas)) {
+      schemas = (new Array(items.length)).fill(schemas);
+    }
+
+    schemas.forEach(function(schema, idx) {
+      mIdx = idx;
+      const item = items[idx];
+      validate(schemas, item);
+    })
+
+
+    if (parentSchema.hasOwnProperty("additionalItems") && mIdx < items.length-1) {
+      if (parentSchema.additionalItems === false) {
+        throw new Error("Additional items");
+      }
+      else {
+        for (var i=mIdx+1; i<items.length; i++) {
+          const rslt = validate(parentSchema.additionalItems, items[i]);
+        }
+      }
+    }
+  },
 };
