@@ -21,29 +21,25 @@
   "devDependencies": {
     "eslint": "^0.24.0",
     "expect.js": "^0.3.1",
-    "mocha": "^2.3.3",
-    "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.3.0"
+    "mocha": "^6.0.2",
+    "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.7.0"
   },
   "dependencies": {
-    "lodash.assign": "^3.2.0",
-    "lodash.capitalize": "^3.0.0",
-    "lodash.clone": "^3.0.3",
+    "lodash.capitalize": "^4.2.1",
+    "lodash.clone": "^4.5.0",
     "lodash.compact": "^3.0.0",
-    "lodash.contains": "^2.4.3",
-    "lodash.deburr": "^3.0.2",
-    "lodash.escape": "^3.0.0",
-    "lodash.forin": "^3.0.2",
-    "lodash.isarray": "^3.0.4",
-    "lodash.isboolean": "^3.0.1",
-    "lodash.isdate": "^3.0.1",
+    "lodash.deburr": "^4.1.0",
+    "lodash.escape": "^4.0.1",
+    "lodash.forin": "^4.4.0",
+    "lodash.isboolean": "^3.0.3",
+    "lodash.isdate": "^4.0.1",
     "lodash.isnull": "^3.0.0",
     "lodash.isnumber": "^3.0.1",
     "lodash.isobject": "^3.0.2",
-    "lodash.isstring": "^3.0.1",
-    "lodash.kebabcase": "^3.0.1",
-    "lodash.keys": "^3.1.2",
-    "lodash.trim": "^3.0.1",
-    "lodash.uniq": "^3.2.2",
-    "lodash.words": "^3.0.2"
+    "lodash.isstring": "^4.0.1",
+    "lodash.kebabcase": "^4.1.1",
+    "lodash.trim": "^4.5.1",
+    "lodash.uniq": "^4.5.0",
+    "lodash.words": "^4.2.0"
   }
 }
