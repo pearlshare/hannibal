@@ -8,7 +8,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/index.js && ./node_modules/.bin/eslint lib test"
+    "test": "mocha test/index.js",
+    "test:json-schema-org": "mocha test/json-schema-org.js"
   },
   "keywords": [
     "JSON",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "eslint": "^0.24.0",
     "expect.js": "^0.3.1",
+    "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite",
     "mocha": "^6.0.2",
     "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.7.0"
   },
