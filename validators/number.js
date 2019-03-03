@@ -33,5 +33,10 @@ module.exports = {
     if (values.indexOf(value) < 0) {
       throw new Error("number: " + value + " is not one of: " + values.join(", "));
     }
+  },
+  const: function (value, input) {
+    if (value !== input) {
+      throw new Error("const: not equal");
+    }
   }
 };

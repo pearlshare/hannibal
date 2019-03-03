@@ -1,7 +1,5 @@
-var lodash = {
-  isEqual: require('lodash.isequal'),
-  uniqWith: require('lodash.uniqwith')
-};
+var isEqual = require('lodash.isequal');
+var uniqWith = require('lodash.uniqwith');
 
 module.exports = {
   min: function minArrayLength (value, length) {
@@ -15,10 +13,15 @@ module.exports = {
     }
   },
   uniqueItems: function (value) {
-    var uniqArr = lodash.uniqWith(value, lodash.isEqual);
+    var uniqArr = uniqWith(value, isEqual);
     if (uniqArr.length < value.length) {
       throw new Error("array is not unique");
     }
 
+  },
+  const: function (value, input) {
+    if (!isEqual(value, input)) {
+      throw new Error("const: not equal");
+    }
   }
 };
