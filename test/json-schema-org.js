@@ -144,8 +144,8 @@ const suites = [].concat(
 
 
 describe.only("json-schema-org", () => {
-	suites.forEach((suite)=> {
-		describe(suite.description, () => {
+  suites.forEach((suite)=> {
+    describe(suite.description, () => {
       suite.tests.forEach((test) => {
         it(test.description, function() {
           const hannibal = new Hannibal()
@@ -156,5 +156,5 @@ describe.only("json-schema-org", () => {
         })
       })
     })
-	})
+  })
 })
