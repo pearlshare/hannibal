@@ -9,6 +9,16 @@ module.exports = {
       throw new Error("number is too big, max: " + max + " and was: " + value);
     }
   },
+  exclusiveMinimum: function minNumber (value, min) {
+    if (value <= min) {
+      throw new Error("number is too small, exclusiveMinimum: " + min + " and was: " + value);
+    }
+  },
+  exclusiveMaximum: function maxNumber (value, max) {
+    if (value >= max) {
+      throw new Error("number is too big, exclusiveMaximum: " + max + " and was: " + value);
+    }
+  },
   minPrecision: function minNumberPrecision (value, min) {
     if (value.toString().split(".")[1].length < min) {
       throw new Error("number is not precise enough, min precision: " + min + " and was: " + value);

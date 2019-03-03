@@ -97,53 +97,53 @@ const jsonSchemaOrgSuites = {
     require('json-schema-test-suite/tests/draft6/uniqueItems.json'),
   ),
   'draft7': [].concat(
-    require('json-schema-test-suite/tests/draft7/additionalItems.json'),
-    require('json-schema-test-suite/tests/draft7/additionalProperties.json'),
-    require('json-schema-test-suite/tests/draft7/allOf.json'),
-    require('json-schema-test-suite/tests/draft7/anyOf.json'),
-    require('json-schema-test-suite/tests/draft7/boolean_schema.json'),
-    require('json-schema-test-suite/tests/draft7/const.json'),
-    require('json-schema-test-suite/tests/draft7/contains.json'),
+    // require('json-schema-test-suite/tests/draft7/additionalItems.json'),
+    // require('json-schema-test-suite/tests/draft7/additionalProperties.json'),
+    // require('json-schema-test-suite/tests/draft7/allOf.json'),
+    // require('json-schema-test-suite/tests/draft7/anyOf.json'),
+    // require('json-schema-test-suite/tests/draft7/boolean_schema.json'),
+    // require('json-schema-test-suite/tests/draft7/const.json'),
+    // require('json-schema-test-suite/tests/draft7/contains.json'),
     require('json-schema-test-suite/tests/draft7/default.json'),
-    require('json-schema-test-suite/tests/draft7/definitions.json'),
-    require('json-schema-test-suite/tests/draft7/dependencies.json'),
+    // require('json-schema-test-suite/tests/draft7/definitions.json'),
+    // require('json-schema-test-suite/tests/draft7/dependencies.json'),
     require('json-schema-test-suite/tests/draft7/enum.json'),
     require('json-schema-test-suite/tests/draft7/exclusiveMaximum.json'),
     require('json-schema-test-suite/tests/draft7/exclusiveMinimum.json'),
-    require('json-schema-test-suite/tests/draft7/if-then-else.json'),
-    require('json-schema-test-suite/tests/draft7/items.json'),
+    // require('json-schema-test-suite/tests/draft7/if-then-else.json'),
+    // require('json-schema-test-suite/tests/draft7/items.json'),
     require('json-schema-test-suite/tests/draft7/maxItems.json'),
     require('json-schema-test-suite/tests/draft7/maxLength.json'),
-    require('json-schema-test-suite/tests/draft7/maxProperties.json'),
+    // require('json-schema-test-suite/tests/draft7/maxProperties.json'),
     require('json-schema-test-suite/tests/draft7/maximum.json'),
     require('json-schema-test-suite/tests/draft7/minItems.json'),
     require('json-schema-test-suite/tests/draft7/minLength.json'),
-    require('json-schema-test-suite/tests/draft7/minProperties.json'),
+    // require('json-schema-test-suite/tests/draft7/minProperties.json'),
     require('json-schema-test-suite/tests/draft7/minimum.json'),
-    require('json-schema-test-suite/tests/draft7/multipleOf.json'),
-    require('json-schema-test-suite/tests/draft7/not.json'),
-    require('json-schema-test-suite/tests/draft7/oneOf.json'),
+    // require('json-schema-test-suite/tests/draft7/multipleOf.json'),
+    // require('json-schema-test-suite/tests/draft7/not.json'),
+    // require('json-schema-test-suite/tests/draft7/oneOf.json'),
     require('json-schema-test-suite/tests/draft7/pattern.json'),
-    require('json-schema-test-suite/tests/draft7/patternProperties.json'),
+    // require('json-schema-test-suite/tests/draft7/patternProperties.json'),
     require('json-schema-test-suite/tests/draft7/properties.json'),
-    require('json-schema-test-suite/tests/draft7/propertyNames.json'),
-    require('json-schema-test-suite/tests/draft7/ref.json'),
-    require('json-schema-test-suite/tests/draft7/refRemote.json'),
-    require('json-schema-test-suite/tests/draft7/required.json'),
+    // require('json-schema-test-suite/tests/draft7/propertyNames.json'),
+    // require('json-schema-test-suite/tests/draft7/ref.json'),
+    // require('json-schema-test-suite/tests/draft7/refRemote.json'),
+    // require('json-schema-test-suite/tests/draft7/required.json'),
     require('json-schema-test-suite/tests/draft7/type.json'),
     require('json-schema-test-suite/tests/draft7/uniqueItems.json'),
   )
 };
 
 const suites = [].concat(
-  jsonSchemaOrgSuites.draft3,
-  jsonSchemaOrgSuites.draft4,
-  jsonSchemaOrgSuites.draft6,
+  // jsonSchemaOrgSuites.draft3,
+  // jsonSchemaOrgSuites.draft4,
+  // jsonSchemaOrgSuites.draft6,
   jsonSchemaOrgSuites.draft7,
 );
 
 
-describe.only("json-schema-org", () => {
+describe("json-schema-org", () => {
   suites.forEach((suite)=> {
     describe(suite.description, () => {
       suite.tests.forEach((test) => {
@@ -151,7 +151,16 @@ describe.only("json-schema-org", () => {
           const hannibal = new Hannibal()
           const validator = hannibal.create(suite.schema);
 
-          const rslt = validator(test.data)
+          const rslt = validator(test.data, {
+            jsonSchemaMode: true
+          })
+          if(rslt.isValid !== test.valid) {
+            if(process.env.TEST_DEBUG === "true") {
+              console.log(rslt)
+              console.log(suite.schema)
+              console.log(test.data)
+            }
+          }
           assert.equal(rslt.isValid, test.valid);
         })
       })
