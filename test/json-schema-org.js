@@ -103,13 +103,13 @@ const jsonSchemaOrgSuites = {
     // require('json-schema-test-suite/tests/draft7/anyOf.json'),
     // require('json-schema-test-suite/tests/draft7/contains.json'),
     // require('json-schema-test-suite/tests/draft7/definitions.json'),
-    // require('json-schema-test-suite/tests/draft7/dependencies.json'),
     // require('json-schema-test-suite/tests/draft7/multipleOf.json'),
     // require('json-schema-test-suite/tests/draft7/not.json'),
     // require('json-schema-test-suite/tests/draft7/oneOf.json'),
     require('json-schema-test-suite/tests/draft7/boolean_schema.json'),
     require('json-schema-test-suite/tests/draft7/const.json'),
     require('json-schema-test-suite/tests/draft7/default.json'),
+    require('json-schema-test-suite/tests/draft7/dependencies.json'),
     require('json-schema-test-suite/tests/draft7/enum.json'),
     require('json-schema-test-suite/tests/draft7/exclusiveMaximum.json'),
     require('json-schema-test-suite/tests/draft7/exclusiveMinimum.json'),
@@ -139,7 +139,7 @@ const suites = [].concat(
   // jsonSchemaOrgSuites.draft3,
   // jsonSchemaOrgSuites.draft4,
   // jsonSchemaOrgSuites.draft6,
-  jsonSchemaOrgSuites.draft7,
+  jsonSchemaOrgSuites.draft7
 );
 
 

@@ -61,5 +61,24 @@ module.exports = {
         throw new Error("Required field '"+key+"' not found");
       }
     })
+  },
+  dependencies: function (value, input, validate) {
+    Object.keys(input).forEach(function (key) {
+      if (value[key]) {
+        if (Array.isArray(input[key])) {
+          input[key].forEach(function(depKey) {
+            if (!value.hasOwnProperty(depKey)) {
+              throw new Error("Missing dependency: '"+depKey+"'");
+            }
+          })
+        }
+        else if(typeof(input[key]) === "object") {
+          validate(input[key], value);
+        }
+        else {
+          throw new Error("Unexpected");
+        }
+      }
+    })
   }
 };
