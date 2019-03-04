@@ -32,6 +32,29 @@ module.exports = {
       throw new Error("const: not equal");
     }
   },
+  contains: function(items, schema, validate, parentSchema) {
+    if (items.length < 1) {
+      throw new Error("contains doesn't expect empty array");
+    }
+
+    if(typeof(schema) === "boolean") {
+      if(schema === true) {
+        return;
+      }
+      else {
+        throw new Error("invalid");
+      }
+    }
+
+    const found = items.find(function(item, idx) {
+      rslt = validate(schema, item, {clean: true});
+      return rslt.isValid;
+    })
+
+    if(!found) {
+      throw new Error("doesn't contain");
+    }
+  },
   items: function(items, schemas, validate, parentSchema) {
     if(typeof(items) === "boolean") {
       if(true) {
@@ -50,9 +73,14 @@ module.exports = {
     }
 
     schemas.forEach(function(schema, idx) {
-      mIdx = idx;
-      const item = items[idx];
-      validate(schemas, item);
+      if(idx < items.length) {
+        mIdx = idx;
+        const item = items[idx];
+        const rslt = validate(schema, item);
+        if (!rslt.isValid) {
+          throw new Error("invalid");
+        }
+      }
     })
 
 

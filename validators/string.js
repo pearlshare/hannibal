@@ -1,6 +1,11 @@
+var object = require("./object");
 var stringLength = require('string-length');
 
 module.exports = {
+  allOf: object.allOf,
+  anyOf: object.anyOf,
+  oneOf: object.oneOf,
+  not: object.not,
   min: function minStringLength (value, length) {
     if (stringLength(value) < length) {
       throw new Error("string is too short, requires: " + length + " chars and was: " + value.length);

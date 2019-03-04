@@ -1,4 +1,15 @@
+var object = require("./object");
+
 module.exports = {
+  allOf: object.allOf,
+  anyOf: object.anyOf,
+  oneOf: object.oneOf,
+  not: object.not,
+  multipleOf: function (value, multiple) {
+    if(!Number.isInteger(value / multiple)) {
+      throw "Not a multiple";
+    }
+  },
   min: function minNumber (value, min) {
     if (value < min) {
       throw new Error("number is too small, min: " + min + " and was: " + value);

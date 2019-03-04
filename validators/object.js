@@ -1,6 +1,60 @@
 const isEqual = require("lodash.isequal");
 
 module.exports = {
+  allOf: function(value, schemas, validate) {
+    if(schemas.length < 1) {
+      throw new Error("allOf: Must be a non empty array");
+    }
+
+    var fail = false;
+    schemas.forEach(function(schema) {
+      const rslt = validate(schema, value, {clean: true});
+      if (!rslt.isValid) {
+        fail = true;
+      }
+    })
+
+
+    if (fail) {
+      throw new Error("Must match all");
+    }
+  },
+  anyOf: function(value, schemas, validate) {
+    if(schemas.length < 1) {
+      throw new Error("allOf: Must be a non empty array");
+    }
+
+    const found = schemas.filter(function(schema) {
+      const rslt = validate(schema, value, {clean: true});
+      return rslt.isValid;
+    })
+
+    if (found.length < 1) {
+      throw new Error("anyOf failed");
+    }
+  },
+  not: function(value, schema, validate) {
+    const rslt = validate(schema, value, {clean: true});
+    if(rslt.isValid) {
+      throw new Error(rslt.error);
+    }
+  },
+  oneOf: function(value, schemas, validate) {
+    if(schemas.length < 1) {
+      throw new Error("oneOf: Must be a non empty array");
+    }
+
+    let found = false;
+    schemas.forEach(function(schema) {
+      const rslt = validate(schema, value, {clean: true});
+      if(found && rslt.isValid) {
+        throw new Error("found more than one");
+      }
+      else if (rslt.isValid) {
+        found = true;
+      }
+    })
+  },
   maxProperties: function minDate (value, maxProperties) {
     const numKeys = Object.keys(value).length;
     if (numKeys > maxProperties) {
@@ -14,11 +68,19 @@ module.exports = {
     }
   },
   propertyNames: function (value, schema, validate) {
-    Object.keys(value).forEach(function(key) {
-      validate(schema, key);
-    })
+    const keys = Object.keys(value)
+    if(schema === false) {
+      if (keys.length > 0) {
+        throw new Error("No propertyNames allowed");
+      }
+    }
+    else {
+      keys.forEach(function(key) {
+        validate(schema, key);
+      })
+    }
   },
-  patternProperties: function (value, obj, validate) {
+  patternProperties: function (value, obj, validate, parent) {
     const keyFns = Object.keys(obj).map(function(key) {
       return {
         regex: new RegExp(key),
@@ -31,14 +93,12 @@ module.exports = {
         return key.match(obj.regex)
       });
 
-      if(!found) {
-        throw new Error("no found '"+key+"'");
+      if (found) {
+        validate(found.schema, value[key]);
       }
-
-      validate(found.schema, value[key]);
     })
   },
-  contains: function (value, schema) {
+  additionalProperties: function(value, schema) {
     // TODO
   },
   const: function (value, input) {
@@ -54,7 +114,7 @@ module.exports = {
       throw new Error("const: not equal");
     }
   },
-  required: function (value, input) {
+  required: function (value, input, validate, parent) {
     const keys = Object.keys(value)
     const rslt = input.forEach(function (key) {
       if(keys.indexOf(key) < 0) {
@@ -72,8 +132,15 @@ module.exports = {
             }
           })
         }
-        else if(typeof(input[key]) === "object") {
-          validate(input[key], value);
+        else if(
+          ["object", "boolean"].indexOf(
+            typeof(input[key])
+          ) > -1
+        ) {
+          const rslt = validate(input[key], value);
+          if(!rslt.isValid) {
+            throw new Error("TODO");
+          }
         }
         else {
           throw new Error("Unexpected");
