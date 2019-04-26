@@ -19,9 +19,9 @@
   "tonicExampleFilename": "examples/tonic.js",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^0.24.0",
+    "eslint": "^5.16.0",
     "expect.js": "^0.3.1",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.7.0"
   },
   "dependencies": {
