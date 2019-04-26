@@ -1,12 +1,16 @@
+var stringLength = require('string-length');
+
 module.exports = {
   min: function minStringLength (value, length) {
-    if (value.length < length) {
-      throw new Error("string is too short, requires: " + length + " chars and was: " + value.length);
+    var valueLen = stringLength(value);
+    if (valueLen < length) {
+      throw new Error("string is too short, requires: " + length + " chars and was: " + valueLen);
     }
   },
   max: function maxStringLength (value, length) {
-    if (value.length > length) {
-      throw new Error("string is too long, requires: " + length + " chars and was: " + value.length);
+    var valueLen = stringLength(value);
+    if (valueLen > length) {
+      throw new Error("string is too long, requires: " + length + " chars and was: " + valueLen);
     }
   },
   regex: function regexString (value, regex) {
