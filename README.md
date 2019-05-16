@@ -88,7 +88,7 @@ assert.deepEqual(basicRslt2, {
   },
   error: {
     age: {
-      type: '\'string\' was not in allowed types: number' 
+      type: '\'string\' was not in allowed types: integer, float' 
     }
   }
 });
