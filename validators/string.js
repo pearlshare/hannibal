@@ -1,11 +1,18 @@
+var object = require("./object");
+var stringLength = require('string-length');
+
 module.exports = {
+  allOf: object.allOf,
+  anyOf: object.anyOf,
+  oneOf: object.oneOf,
+  not: object.not,
   min: function minStringLength (value, length) {
-    if (value.length < length) {
+    if (stringLength(value) < length) {
       throw new Error("string is too short, requires: " + length + " chars and was: " + value.length);
     }
   },
   max: function maxStringLength (value, length) {
-    if (value.length > length) {
+    if (stringLength(value) > length) {
       throw new Error("string is too long, requires: " + length + " chars and was: " + value.length);
     }
   },
@@ -18,6 +25,11 @@ module.exports = {
   enum: function enumString (value, values) {
     if (values.indexOf(value) < 0) {
       throw new Error("string: " + value + " is not one of: " + values.join(", "));
+    }
+  },
+  const: function (value, input) {
+    if (value !== input) {
+      throw new Error("const: not equal");
     }
   }
 };
