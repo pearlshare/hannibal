@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha test/index.js",
-    "test:json-schema-org": "mocha test/json-schema-org.js"
+    "test:json-schema": "nyc mocha test/index.js test/json-schema-org.js"
   },
   "keywords": [
     "JSON",
