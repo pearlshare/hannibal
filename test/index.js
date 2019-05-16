@@ -7,3 +7,4 @@ require("./validator");
 require("./validators");
 require("./readme");
 require("./lite");
+// require("./json-schema-org");

@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/index.js",
+    "test": "nyc mocha test/index.js",
     "test:json-schema-org": "mocha test/json-schema-org.js"
   },
   "keywords": [
@@ -24,6 +24,7 @@
     "expect.js": "^0.3.1",
     "json-schema-test-suite": "github:json-schema-org/JSON-Schema-Test-Suite",
     "mocha": "^6.0.2",
+    "nyc": "^14.1.1",
     "readme-tester": "git://github.com/orangemug/readme-tester.git#v0.7.0"
   },
   "dependencies": {
@@ -44,5 +45,17 @@
     "lodash.uniqwith": "^4.5.0",
     "lodash.words": "^4.2.0",
     "string-length": "^2.0.0"
+  },
+  "nyc": {
+    "report-dir": "artifacts/coverage",
+    "include": [
+      "transforms/**/*",
+      "validators/**/*",
+      "lib/**/*"
+    ],
+    "reporter": [
+      "html",
+      "text-summary"
+    ]
   }
 }
